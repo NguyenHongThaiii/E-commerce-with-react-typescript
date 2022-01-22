@@ -1,3 +1,5 @@
+import { Cart } from './cart'
+
 export interface PaginationParams {
   _limit: number
   _page: number
@@ -13,8 +15,7 @@ export interface FirebaseResponse {
   email: string
   photoURL: string
   uid: string
-
-  [key: string]: string | null
+  cartList: Cart[]
 }
 export interface ListParams {
   _page?: number
@@ -23,4 +24,8 @@ export interface ListParams {
   _order?: string
 
   [key: string]: any
+}
+
+export interface QuantityState {
+  quantity: number
 }

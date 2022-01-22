@@ -1,18 +1,20 @@
-import * as React from 'react'
+import { Box, Typography } from '@mui/material'
+import { RootState } from 'app/store'
 import firebase from 'firebase/compat/app'
-import { Box, Typography, Button } from '@mui/material'
+import React from 'react'
 import { StyledFirebaseAuth } from 'react-firebaseui'
-import { useDispatch } from 'react-redux'
-import { logout } from '../../../../app/authSlice'
-import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 export interface LoginPageProps {}
 
 export default function LoginPage(props: LoginPageProps) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
   // Configure FirebaseUI.
+  const user = useSelector((state: RootState) => state.auth.user)
+  if (user.email) {
+    return <Navigate to="/" />
+  }
+
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
@@ -20,15 +22,7 @@ export default function LoginPage(props: LoginPageProps) {
     // We will display Google and Facebook as auth providers.
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   }
-  const handleLogout = async () => {
-    // handle in redux
 
-    const action = logout()
-    await dispatch(action)
-    setTimeout(() => {
-      navigate('/')
-    }, 1000)
-  }
   return (
     <Box
       sx={{

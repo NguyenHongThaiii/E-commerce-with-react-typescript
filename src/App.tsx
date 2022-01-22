@@ -1,24 +1,23 @@
 import { unwrapResult } from '@reduxjs/toolkit'
+import { getMe } from 'app/authSlice'
+import { RootState } from 'app/store'
+import Footer from 'components/Footer/Footer'
+import Header from 'components/Header/Header'
+import LoginPage from 'feature/Auth/components/pages/Login-Page'
+import Delivery from 'feature/HomePage/components/Delivery'
+import HomePage from 'feature/HomePage/Home-Page'
+import ListingFeature from 'feature/Products'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
-import { AuthState, getMe } from './app/authSlice'
-import { RootState } from './app/store'
-import Footer from './components/Footer/Footer'
-import Header from './components/Header/Header'
-import LoginPage from './feature/Auth/components/pages/Login-Page'
-import HomePage from './feature/HomePage/Home-Page'
-import ListingFeature from './feature/Products'
-import { FirebaseResponse } from './models'
 
 function App() {
   const dispatch = useDispatch()
   const location = useLocation()
-  console.log('user', location)
-  const user = useSelector((state: RootState) => state.auth.user)
+  const cartList = useSelector((state: RootState) => state.auth.user.cartList) || []
   // Configure Firebase.
   const config = {
     apiKey: 'AIzaSyBtZHZgDQlGOZIexBjtfH46VldRv9CXV3g',
@@ -36,7 +35,7 @@ function App() {
       }
 
       try {
-        const resultAction = await dispatch(getMe(user.providerData[0]))
+        const resultAction = await dispatch(getMe({ ...user.providerData[0], cartList }))
         const currentUser = unwrapResult<any>(resultAction)
         // const token = await user.getIdToken()
       } catch (error) {
@@ -54,7 +53,13 @@ function App() {
         <Route path="/products/*" element={<ListingFeature />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
-      {location.pathname !== '/login' && <Footer />}
+
+      {location.pathname !== '/login' && (
+        <>
+          <Delivery />
+          <Footer />
+        </>
+      )}
     </div>
   )
 }

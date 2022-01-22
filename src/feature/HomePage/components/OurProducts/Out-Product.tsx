@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material'
+import productsApi from 'api/productsApi'
+import { ListResponse, Product } from 'models'
 import React, { useEffect, useState } from 'react'
-import productsApi from '../../../../api/productsApi'
-import { ListResponse, Product } from '../../../../models'
 import ProductItem from '../ProductItem/Product-Item'
 
 export interface OurProductProps {}

@@ -1,12 +1,13 @@
 import { Box, Container, Grid, Pagination, Paper, Typography } from '@mui/material'
+import categoriesApi from 'api/categoriesApi'
+import productsApi from 'api/productsApi'
+import CurrentPosition from 'components/CurrentPostiton/Current-Position'
+import Slide from 'components/Slide/Slide'
+import ProductItem from 'feature/HomePage/components/ProductItem/Product-Item'
+import { Category, ListParams, ListResponse, PaginationParams, Product } from 'models'
+import queryString from 'query-string'
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import productsApi from '../../../api/productsApi'
-import { ListResponse, Product, PaginationParams, Category, ListParams } from '../../../models'
-import ProductItem from '../../HomePage/components/ProductItem/Product-Item'
-import queryString from 'query-string'
-import CurrentPosition from '../../../components/CurrentPostiton/Current-Position'
-import categoriesApi from '../../../api/categoriesApi'
 import ProductListFilter from '../components/Product-List-Filter'
 export interface ListPageProps {}
 
@@ -20,6 +21,7 @@ export default function ListPage(props: ListPageProps) {
     _limit: 12,
     _totalRows: 1,
   })
+
   const filters = useMemo(() => {
     const params = queryString.parse(location.search)
     const queryParams = {
@@ -30,16 +32,18 @@ export default function ListPage(props: ListPageProps) {
     return queryParams
   }, [location.search])
 
+  const indexCategory = useMemo(() => {
+    return categoryList.findIndex(
+      (category: Category) => category.name === queryString.parse(location.search).type
+    )
+  }, [productList, categoryList])
+
   useEffect(() => {
     ;(async () => {
       try {
         const { data, pagination }: ListResponse<Product> = await productsApi.getAll(filters)
         setProductList(data)
         setPagination(pagination)
-        // navigate({
-        //   pathname: location.pathname,
-        //   search: queryString.stringify({ ...filters }),
-        // })
       } catch (error) {
         console.log('Fail to fetch product list', error)
       }
@@ -51,6 +55,10 @@ export default function ListPage(props: ListPageProps) {
       try {
         const { data }: ListResponse<Category> = await categoriesApi.getAll()
         setCategoryList(data)
+        navigate({
+          pathname: location.pathname,
+          search: queryString.stringify({ ...filters }),
+        })
       } catch (error) {
         console.log('Fail to fetch category list', error)
       }
@@ -75,90 +83,96 @@ export default function ListPage(props: ListPageProps) {
     })
   }
   return (
-    <Box
-      sx={{
-        // backgroundColor: '#fff',
-        mt: 8,
-      }}
-    >
+    <Box>
+      <Slide
+        imageUrl={
+          categoryList[indexCategory]
+            ? categoryList[indexCategory].slide
+            : 'https://js-ecommerce-api.herokuapp.com/asset/img/category_slide_1.jpg'
+        }
+        name={categoryList[indexCategory] ? categoryList[indexCategory].name : 'All'}
+      />
+
       <CurrentPosition current="Products" />
 
       <Container>
-        <Paper sx={{ p: 2 }} elevation={1}>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography
-              component="span"
-              variant="h5"
-              sx={{
-                position: 'relative',
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                '&::after': {
-                  content: `""`,
-                  height: 2,
-                  width: 60,
-                  position: 'absolute',
-                  top: '50%',
-                  left: '-75px',
-                  backgroundColor: '#000',
-                },
-                '&::before': {
-                  content: `""`,
-                  height: 2,
-                  width: 60,
-                  position: 'absolute',
-                  top: '50%',
-                  right: '-75px',
-                  backgroundColor: '#000',
-                },
-              }}
-            >
-              All
-            </Typography>
-            <Typography
-              sx={{
-                color: 'rgb(135,135,135)',
-                fontStyle: 'italic',
-                fontFamily: `"Libre Baskerville", serif`,
-                mb: 3,
-              }}
-            >
-              A place filled with outstanding styles
-            </Typography>
-          </Box>
-
-          {/* Filters */}
-          <Box sx={{ my: 2 }}>
-            <ProductListFilter categoryList={categoryList} onChange={handleOnChange} />
-          </Box>
-          {/* Listing */}
-          <Grid container spacing={2}>
-            {productList.map((product) => (
-              <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-                <ProductItem product={product} />
-              </Grid>
-            ))}
-          </Grid>
-
-          {/* pagination */}
-          <Box
+        {/* <Paper sx={{ p: 2 }} elevation={1}> */}
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography
+            component="span"
+            variant="h5"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-
-              mt: 3,
+              position: 'relative',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              '&::after': {
+                content: `""`,
+                height: 2,
+                width: 60,
+                position: 'absolute',
+                top: '50%',
+                left: '-75px',
+                backgroundColor: '#000',
+              },
+              '&::before': {
+                content: `""`,
+                height: 2,
+                width: 60,
+                position: 'absolute',
+                top: '50%',
+                right: '-75px',
+                backgroundColor: '#000',
+              },
             }}
           >
-            <Pagination
-              page={pagination._page}
-              count={Math.ceil(pagination._totalRows / pagination._limit)}
-              color="primary"
-              size="large"
-              onChange={handlePageChange}
-            />
-          </Box>
-        </Paper>
+            {categoryList[indexCategory] ? categoryList[indexCategory].name : 'All'}
+          </Typography>
+          <Typography
+            sx={{
+              color: 'rgb(135,135,135)',
+              fontStyle: 'italic',
+              fontFamily: `"Libre Baskerville", serif`,
+              mb: 3,
+            }}
+          >
+            {categoryList[indexCategory]
+              ? categoryList[indexCategory].subTitle
+              : 'A place filledwith outstanding styles'}
+          </Typography>
+        </Box>
+
+        {/* Filters */}
+        <Box sx={{ my: 2 }}>
+          <ProductListFilter categoryList={categoryList} onChange={handleOnChange} />
+        </Box>
+        {/* Listing */}
+        <Grid container spacing={2}>
+          {productList.map((product) => (
+            <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
+              <ProductItem product={product} />
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* pagination */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+            mt: 3,
+          }}
+        >
+          <Pagination
+            page={pagination._page}
+            count={Math.ceil(pagination._totalRows / pagination._limit)}
+            color="primary"
+            size="large"
+            onChange={handlePageChange}
+          />
+        </Box>
+        {/* </Paper> */}
       </Container>
     </Box>
   )

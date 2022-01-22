@@ -1,4 +1,4 @@
-import { FirebaseResponse } from '../models'
+import { FirebaseResponse } from 'models'
 
 const userApi = {
   getMe(response: FirebaseResponse): Promise<FirebaseResponse> {
@@ -8,6 +8,7 @@ const userApi = {
         email: response.email,
         uid: response.uid,
         photoURL: response.photoURL,
+        cartList: response.cartList,
       })
     })
   },

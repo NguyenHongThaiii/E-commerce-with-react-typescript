@@ -1,4 +1,4 @@
-import { Category, ListResponse } from '../models'
+import { Category, ListResponse } from 'models'
 import axiosClient from './axiosClient'
 
 const categoriesApi = {

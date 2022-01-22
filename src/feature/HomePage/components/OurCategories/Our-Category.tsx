@@ -1,8 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material'
+import categoriesApi from 'api/categoriesApi'
+import { Category, ListResponse } from 'models'
 import React, { useEffect, useState } from 'react'
-import categoriesApi from '../../../../api/categoriesApi'
-import { ListResponse } from '../../../../models'
-import { Category } from '../../../../models/category'
 import CategoryItem from '../CategoryItem/Category-Item'
 
 export interface OurCategoryProps {}

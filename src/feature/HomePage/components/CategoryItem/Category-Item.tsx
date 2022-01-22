@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
+import { Category } from 'models'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Category } from '../../../../models/category'
 
 export interface CategoryItemProps {
   category: Category

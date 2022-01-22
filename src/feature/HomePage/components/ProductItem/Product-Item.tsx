@@ -1,16 +1,23 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { Product } from '../../../../models'
 import SearchIcon from '@mui/icons-material/Search'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { format } from '../../../../utils'
+import { Product } from 'models'
+import { format } from 'utils'
+import { useNavigate } from 'react-router-dom'
 export interface ProductItemProps {
   product: Product
 }
 
 export default function ProductItem({ product }: ProductItemProps) {
   const [heart, setHeart] = useState(false)
+  const navigate = useNavigate()
+  const handleToDetailPage = () => {
+    setTimeout(() => {
+      navigate(`/products/${product.id}`)
+    }, 500)
+  }
   return (
     <Box
       sx={{
@@ -18,7 +25,7 @@ export default function ProductItem({ product }: ProductItemProps) {
         overflow: 'hidden',
       }}
     >
-      <Box sx={{ position: 'relative' }}>
+      <Box sx={{ position: 'relative' }} onClick={handleToDetailPage}>
         <Box
           sx={{
             // height: {
@@ -63,7 +70,7 @@ export default function ProductItem({ product }: ProductItemProps) {
           </IconButton>
         </Box>
       </Box>
-      <Box sx={{ backgroundColor: '#fff', mt: '-6px' }}>
+      <Box sx={{ backgroundColor: '#fff', mt: '-6px', textAlign: 'center' }}>
         <Typography sx={{ fontWeight: 'bold' }}>{product.name}</Typography>
         <Typography>{format(product.price)}</Typography>
       </Box>

@@ -4,23 +4,23 @@ import firebase from 'firebase/compat/app'
 const getFirebaseToken = async () => {
   const currentUser = firebase.auth().currentUser
   if (currentUser) return currentUser.getIdToken()
-  if (!localStorage.getItem('firebaseui::rememberedAccounts')) return null
+  const hasLogin = localStorage.getItem('firebaseui::rememberedAccounts')
+  if (!hasLogin) return null
 
   return new Promise((resolve, reject) => {
-    const waitTimeer = setTimeout(() => {
+    const waitTimer = setTimeout(() => {
       reject(null)
     }, 10000)
 
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
-      if (!user) {
-        reject(null)
-        return
-      }
-      const token = await user.getIdToken()
+      // if (!user) {
+      //   reject(null)
+      //   return
+      // }
+      const token = await user?.getIdToken()
       resolve(token)
-      console.log(user.providerData)
       unregisterAuthObserver()
-      clearTimeout(waitTimeer)
+      clearTimeout(waitTimer)
     })
   })
 }
@@ -36,6 +36,7 @@ axiosClient.interceptors.request.use(
   async function (config: AxiosRequestConfig | any) {
     // Do something before request is sent
     const token = await getFirebaseToken()
+    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

@@ -3,23 +3,32 @@ import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   Container,
   IconButton,
   InputBase,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import Sidebar from '../SideBar/Sidebar'
+import { logout } from 'app/authSlice'
+import { RootState } from 'app/store'
+import Sidebar from 'components/SideBar/Sidebar'
+import React, { MouseEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 
 export interface HeaderProps {}
 
 export default function Header(props: HeaderProps) {
   const [status, setStatus] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const userState = useSelector((state: RootState) => state.auth.user)
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -71,6 +80,26 @@ export default function Header(props: HeaderProps) {
 
   const handleToggleSidebar = (newStatus: boolean) => {
     setStatus(newStatus)
+  }
+
+  // Menu
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleLogoutUser = () => {
+    dispatch(logout())
+    setAnchorEl(null)
+
+    setTimeout(() => {
+      navigate('/')
+    }, 1000)
   }
 
   return (
@@ -132,27 +161,59 @@ export default function Header(props: HeaderProps) {
               </Search>
             </Box>
 
-            <Box sx={{}}>
+            {userState.email ? (
+              <Box>
+                <Box
+                  component="span"
+                  sx={{
+                    display: {
+                      xs: 'none',
+                      sm: 'inline-block',
+                    },
+                  }}
+                >
+                  <ButtonStyled to="/products">
+                    <Button>Products</Button>
+                  </ButtonStyled>
+
+                  <IconButton sx={{ mx: 0.5 }} onClick={handleClick}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={userState.photoURL}
+                      sx={{ width: '24px', height: '24px' }}
+                    />
+                  </IconButton>
+                </Box>
+                <IconButton>
+                  <ShoppingCartIcon />
+                </IconButton>
+              </Box>
+            ) : (
               <Box
                 component="span"
                 sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'inline-block',
+                  '&>a': {
+                    textDecoration: 'none',
                   },
                 }}
               >
-                <ButtonStyled to="/products">
-                  <Button>Products</Button>
-                </ButtonStyled>
-                <ButtonStyled to="/login">
-                  <Button>Login</Button>
-                </ButtonStyled>
+                <Link to="/login">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ px: 2.5, py: 0.5, textTransform: 'none', fontSize: '16px' }}
+                  >
+                    Login
+                  </Button>
+                </Link>
               </Box>
-              <IconButton>
-                <ShoppingCartIcon />
-              </IconButton>
-            </Box>
+            )}
+            {/* Menu */}
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogoutUser}>Logout</MenuItem>
+            </Menu>
           </Toolbar>
         </Container>
       </AppBar>

@@ -11,9 +11,9 @@ import {
 } from '@mui/material'
 import React, { ChangeEvent, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Category, ListParams } from '../../../models'
 import queryString from 'query-string'
 import Search from '@mui/icons-material/Search'
+import { Category, ListParams } from 'models'
 
 export interface ProductListFilterProps {
   categoryList: Category[]
@@ -129,12 +129,8 @@ export default function ProductListFilter({ categoryList, onChange }: ProductLis
                 <em>No sort</em>
               </MenuItem>
 
-              <MenuItem value="price.asc">
-                <em>Increase</em>
-              </MenuItem>
-              <MenuItem value="price.desc">
-                <em>Decrease</em>
-              </MenuItem>
+              <MenuItem value="price.asc">Increase</MenuItem>
+              <MenuItem value="price.desc">Decrease</MenuItem>
             </Select>
           </FormControl>
         </Grid>

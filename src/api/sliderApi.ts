@@ -1,4 +1,4 @@
-import { ListResponse, Slider } from '../models'
+import { ListResponse, Slider } from 'models'
 import axiosClient from './axiosClient'
 
 const sliderApi = {

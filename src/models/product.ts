@@ -1,5 +1,5 @@
 export interface Product {
-  id: string | number
+  id: string
   name: string
   imageUrl: any
   description: string
@@ -8,7 +8,7 @@ export interface Product {
   categoryId: string
   mountSold: number
   price: number
-
+  sliderList: string[]
   createdAt: number
   updatedAt: number
 }

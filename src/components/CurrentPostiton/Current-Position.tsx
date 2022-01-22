@@ -69,7 +69,6 @@ export default function CurrentPosition({ current, positionList = [] }: CurrentP
             <Link to={`${position.href}`}> {position.name}</Link>
           </Typography>
         ))}
-
         {current && (
           <Typography sx={{ display: 'flex', alignItems: 'center' }} color="text.primary">
             <ProductionQuantityLimitsIcon sx={{ mr: 0.5 }} fontSize="inherit" />

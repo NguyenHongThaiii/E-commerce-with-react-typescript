@@ -1,13 +1,14 @@
-import { Box, Grid, Theme, Typography, Container } from '@mui/material'
-import React from 'react'
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined'
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
-import InstagramIcon from '@mui/icons-material/Instagram'
 import GitHubIcon from '@mui/icons-material/GitHub'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import YouTubeIcon from '@mui/icons-material/YouTube'
+import { Box, Container, Grid, Theme, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import React from 'react'
+
 export interface FooterProps {}
 
 export default function Footer(props: FooterProps) {
