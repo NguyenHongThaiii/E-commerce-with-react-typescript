@@ -48,8 +48,9 @@ export default function CurrentPosition({ current, positionList = [] }: CurrentP
           <Link to="/">Home</Link>
         </Typography>
 
-        {positionList.map((position) => (
+        {positionList.map((position, index) => (
           <Typography
+            key={index}
             sx={{
               display: 'flex',
               alignItems: 'center',

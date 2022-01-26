@@ -36,7 +36,6 @@ axiosClient.interceptors.request.use(
   async function (config: AxiosRequestConfig | any) {
     // Do something before request is sent
     const token = await getFirebaseToken()
-    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

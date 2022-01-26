@@ -4,6 +4,7 @@ import { RootState } from 'app/store'
 import Footer from 'components/Footer/Footer'
 import Header from 'components/Header/Header'
 import LoginPage from 'feature/Auth/components/pages/Login-Page'
+import CartFeature from 'feature/Cart/Cart-Feature'
 import Delivery from 'feature/HomePage/components/Delivery'
 import HomePage from 'feature/HomePage/Home-Page'
 import ListingFeature from 'feature/Products'
@@ -52,6 +53,7 @@ function App() {
         <Route path="" element={<HomePage />} />
         <Route path="/products/*" element={<ListingFeature />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/carts/*" element={<CartFeature />} />
       </Routes>
 
       {location.pathname !== '/login' && (

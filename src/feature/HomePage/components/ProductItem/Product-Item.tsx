@@ -71,7 +71,20 @@ export default function ProductItem({ product }: ProductItemProps) {
         </Box>
       </Box>
       <Box sx={{ backgroundColor: '#fff', mt: '-6px', textAlign: 'center' }}>
-        <Typography sx={{ fontWeight: 'bold' }}>{product.name}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+            px: 1,
+            textTransform: 'uppercase',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: '1' /* number of lines to show */,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {product.name}
+        </Typography>
         <Typography>{format(product.price)}</Typography>
       </Box>
     </Box>

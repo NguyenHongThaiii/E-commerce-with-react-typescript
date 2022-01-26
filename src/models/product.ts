@@ -8,6 +8,7 @@ export interface Product {
   categoryId: string
   mountSold: number
   price: number
+  type: string
   sliderList: string[]
   createdAt: number
   updatedAt: number

@@ -5,3 +5,8 @@ export interface Cart {
   product: Product
   quantity: number
 }
+
+export interface CartUser {
+  uid: string
+  cartList: Cart[]
+}

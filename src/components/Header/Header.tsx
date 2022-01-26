@@ -4,6 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Button,
   Container,
@@ -11,6 +12,7 @@ import {
   InputBase,
   Menu,
   MenuItem,
+  Theme,
   Toolbar,
   Typography,
 } from '@mui/material'
@@ -18,6 +20,7 @@ import { styled } from '@mui/material/styles'
 import { logout } from 'app/authSlice'
 import { RootState } from 'app/store'
 import Sidebar from 'components/SideBar/Sidebar'
+import { totalProductListQuantity } from 'feature/Cart/Cart-Selector'
 import React, { MouseEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -29,6 +32,7 @@ export default function Header(props: HeaderProps) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const userState = useSelector((state: RootState) => state.auth.user)
+  const totalQuantity = useSelector(totalProductListQuantity)
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -184,9 +188,13 @@ export default function Header(props: HeaderProps) {
                     />
                   </IconButton>
                 </Box>
-                <IconButton>
-                  <ShoppingCartIcon />
-                </IconButton>
+                <ButtonStyled to="/carts">
+                  <IconButton>
+                    <Badge badgeContent={totalQuantity} color="error">
+                      <ShoppingCartIcon />
+                    </Badge>
+                  </IconButton>
+                </ButtonStyled>
               </Box>
             ) : (
               <Box

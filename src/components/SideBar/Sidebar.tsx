@@ -4,7 +4,9 @@ import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
+import { RootState } from 'app/store'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 export interface SidebarProps {
   status: boolean
@@ -12,6 +14,7 @@ export interface SidebarProps {
 }
 
 export default function Sidebar({ status, onClick }: SidebarProps) {
+  const userData = useSelector((state: RootState) => state.auth.user)
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       (event.type === 'keydown' &&

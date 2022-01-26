@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import userApi from 'api/userApi'
 import firebase from 'firebase/compat/app'
-import { Cart, FirebaseResponse } from 'models'
+import { Cart, CartUser, FirebaseResponse } from 'models'
+import { getAccount, getCartListOfAccounts, setAccount, setCartListOfAccounts } from 'utils'
 
 export interface AuthState {
   loading: boolean
@@ -48,21 +49,80 @@ const authSlice = createSlice({
     },
     addToCart(state: AuthState, action: PayloadAction<Cart>) {
       const isUser = !!JSON.parse(localStorage.getItem('firebaseui::rememberedAccounts') as string)
-        ?.user
+        ?.email
       if (!isUser) {
         alert('Please login to Firebase')
         return
       }
       const { id } = action.payload
-      const index = state.user.cartList.findIndex((cart: Cart) => cart.id === id)
-      if (index < 0) {
-        state.user.cartList.push(action.payload)
-      } else {
-        state.user.cartList[index].quantity += action.payload.quantity
+      const uid = getAccount().uid
+      const listUserForCartList = getCartListOfAccounts()
+      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      const index = listUserForCartList[indexUser]?.cartList.findIndex((user: Cart) => {
+        return user.id === (id as unknown)
+      })
+      const indexUserRedux = state.user.cartList.findIndex((cart: Cart) => cart.id === id)
+      const newUser: CartUser = {
+        uid,
+        cartList: [],
       }
-      localStorage.setItem('firebaseui::rememberedAccounts', JSON.stringify(state.user))
+      if (indexUser < 0) {
+        newUser.cartList.push(action.payload)
+        listUserForCartList.push(newUser)
+        state.user.cartList.push(action.payload)
 
-      console.log('state', state)
+        localStorage.setItem(
+          'firebaseui::rememberedCartListAccounts',
+          JSON.stringify([...listUserForCartList])
+        )
+        localStorage.setItem('firebaseui::rememberedAccounts', JSON.stringify({ ...state.user }))
+      } else {
+        if (index < 0) {
+          state.user.cartList.push(action.payload)
+          listUserForCartList[indexUser].cartList.push(action.payload)
+        } else {
+          state.user.cartList[indexUserRedux].quantity += action.payload.quantity
+          listUserForCartList[indexUser].cartList[index] = state.user.cartList[indexUserRedux]
+        }
+        localStorage.setItem('firebaseui::rememberedAccounts', JSON.stringify({ ...state.user }))
+        localStorage.setItem(
+          'firebaseui::rememberedCartListAccounts',
+          JSON.stringify([...listUserForCartList])
+        )
+      }
+    },
+
+    setQuantity(state: AuthState, action: PayloadAction<Cart>) {
+      const uid = getAccount().uid
+      const listUserForCartList = getCartListOfAccounts()
+      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      const index = state.user.cartList.findIndex(
+        (cart: Cart) => cart.id === (action.payload.id as unknown)
+      )
+      if (index >= 0) {
+        state.user.cartList[index].quantity = action.payload.quantity
+        listUserForCartList[indexUser].cartList[index].quantity = action.payload.quantity
+        setCartListOfAccounts([...listUserForCartList])
+        setAccount({ ...state.user })
+      } else {
+        return
+      }
+    },
+    removeFromCart(state: AuthState, action: PayloadAction<string | unknown>) {
+      const uid = getAccount().uid
+      const listUserForCartList = getCartListOfAccounts()
+      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      const index = state.user.cartList.findIndex(
+        (cart: Cart) => cart.id === (action.payload as unknown)
+      )
+      if (index >= 0) {
+        state.user.cartList.splice(index, 1)
+        listUserForCartList[indexUser]?.cartList.splice(index, 1)
+        setCartListOfAccounts([...listUserForCartList])
+        setAccount({ ...state.user })
+      } else {
+        return
+      }
     },
   },
   extraReducers: (builder) => {
@@ -70,10 +130,20 @@ const authSlice = createSlice({
       state.loading = true
     })
     builder.addCase(getMe.fulfilled, (state: AuthState, action) => {
+      if (!JSON.parse(localStorage.getItem('firebaseui::rememberedAccounts') as string)) {
+        localStorage.setItem('firebaseui::rememberedCartListAccounts', JSON.stringify([]))
+      }
       state.loading = false
-      localStorage.setItem('firebaseui::rememberedAccounts', JSON.stringify(action.payload))
-      console.log(action.payload)
       state.user = action.payload
+      const listUserForCartList = JSON.parse(
+        localStorage.getItem('firebaseui::rememberedCartListAccounts') as string
+      )
+      const indexUser = listUserForCartList.findIndex(
+        (user: CartUser) => user.uid === action.payload.uid
+      )
+      if (indexUser >= 0) state.user.cartList = listUserForCartList[indexUser].cartList
+
+      localStorage.setItem('firebaseui::rememberedAccounts', JSON.stringify(action.payload))
     })
     builder.addCase(getMe.rejected, (state: AuthState, action) => {
       state.loading = false
@@ -82,7 +152,7 @@ const authSlice = createSlice({
   },
 })
 
-export const { logout, addToCart } = authSlice.actions
+export const { logout, addToCart, removeFromCart, setQuantity } = authSlice.actions
 const authReducer = authSlice.reducer
 
 export default authReducer

@@ -1,6 +1,8 @@
 import { Box, Container, Grid, Paper, Theme } from '@mui/material'
 import productsApi from 'api/productsApi'
 import { addToCart } from 'app/authSlice'
+import CurrentPosition from 'components/CurrentPostiton/Current-Position'
+import Slide from 'components/Slide/Slide'
 import { Cart, Product, QuantityState } from 'models'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -42,6 +44,15 @@ export default function DetailPage(props: DetailPageProps) {
   }
   return (
     <Box>
+      <Slide
+        imageUrl="https://js-ecommerce-api.herokuapp.com/asset/img/category_slide_1.jpg"
+        name={(product as Product)?.type}
+      />
+      <CurrentPosition
+        current={(product as Product)?.name}
+        positionList={[{ name: 'Products', href: '/products' }]}
+      />
+
       <Container sx={{ mt: 8 }}>
         <Paper sx={{ p: 2 }}>
           <Grid container spacing={2}>
