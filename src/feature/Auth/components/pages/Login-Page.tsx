@@ -45,7 +45,7 @@ export default function LoginPage(props: LoginPageProps) {
         variant="h4"
         sx={{ fontWeight: 'bold', fontFamily: `"Montserrat", Arial, Helvetica, sans-serif`, mb: 4 }}
       >
-        Welcome to the S n o w F o x
+        Welcome to the FM Shop
       </Typography>
       <Box>
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />

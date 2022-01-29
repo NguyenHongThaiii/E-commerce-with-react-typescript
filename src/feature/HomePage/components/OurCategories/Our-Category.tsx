@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 import categoriesApi from 'api/categoriesApi'
+import { CategorySkeleton } from 'components/SkeletonsField'
 import { Category, ListResponse } from 'models'
 import React, { useEffect, useState } from 'react'
 import CategoryItem from '../CategoryItem/Category-Item'
@@ -18,6 +19,7 @@ export default function OurCategory(props: OurCategoryProps) {
       }
     })()
   }, [])
+
   return (
     <Box sx={{ textAlign: 'center', mt: 8 }}>
       <Typography
@@ -62,11 +64,15 @@ export default function OurCategory(props: OurCategoryProps) {
 
       <Box>
         <Grid container spacing={2}>
-          {state.map((category, index) => (
-            <Grid key={category.id} item xs={12} sm={6} md={4} lg={2}>
-              <CategoryItem category={category} />
-            </Grid>
-          ))}
+          {state.length > 0 ? (
+            state.map((category, index) => (
+              <Grid key={category.id} item xs={12} sm={6} md={4} lg={2}>
+                <CategoryItem category={category} />
+              </Grid>
+            ))
+          ) : (
+            <CategorySkeleton length={6} />
+          )}
         </Grid>
       </Box>
     </Box>

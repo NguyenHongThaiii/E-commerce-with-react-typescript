@@ -1,21 +1,17 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button } from '@mui/material'
 import { QuantityField } from 'components/FieldControls'
 import { Product, QuantityState } from 'models'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 export interface ProductDetailFormProps {
   onSubmit: (formValues: QuantityState) => void
   initialValues: QuantityState
-  product: Product
 }
 
-export default function ProductDetailForm({
-  initialValues,
-  onSubmit,
-  product,
-}: ProductDetailFormProps) {
+export default function ProductDetailForm({ initialValues, onSubmit }: ProductDetailFormProps) {
+  const [loading, setLoading] = useState<boolean>(false)
   const schema = yup.object({
     quantity: yup
       .number()
@@ -30,21 +26,20 @@ export default function ProductDetailForm({
     defaultValues: initialValues,
     resolver: yupResolver(schema),
   })
-  const {
-    handleSubmit,
-    control,
-    formState: { isSubmitting },
-  } = form
+  const { handleSubmit, control } = form
   const handleOnSubmit = async (formValues: QuantityState) => {
     if (!onSubmit) return
-
-    await onSubmit(formValues)
+    setLoading(true)
+    setTimeout(async () => {
+      await onSubmit(formValues)
+      setLoading(false)
+    }, 1000)
   }
   return (
     <Box sx={{ maxWidth: '200px' }}>
       <form onSubmit={handleSubmit(handleOnSubmit)}>
         <QuantityField control={control} name="quantity" label="Quantity" form={form} />
-        <Button variant="contained" fullWidth type="submit" sx={{ mt: 2 }} disabled={isSubmitting}>
+        <Button variant="contained" fullWidth type="submit" disabled={loading} sx={{ mt: 2 }}>
           Add to cart
         </Button>
       </form>

@@ -1,3 +1,4 @@
+import NotFound from 'components/NotFound/Not-Found'
 import * as React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import DetailPage from './pages/Detail-Page'
@@ -10,6 +11,7 @@ export default function ListingFeature(props: ListingFeatureProps) {
     <Routes>
       <Route path="" element={<ListPage />} />
       <Route path=":productId" element={<DetailPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

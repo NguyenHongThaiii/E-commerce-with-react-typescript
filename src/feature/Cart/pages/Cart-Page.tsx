@@ -1,9 +1,10 @@
-import { Box, Container, Grid, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
 import TableProductCart from '../components/Table-Product-Cart'
 
@@ -63,14 +64,18 @@ export default function CartPage(props: ICartPageProps) {
       </Box>
 
       <Box sx={{ maxWidth: '1280px', m: '0 auto' }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} lg={8}>
-            <TableProductCart cartList={cartList} />
+        {cartList.length > 0 ? (
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={8}>
+              <TableProductCart cartList={cartList} />
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <PaymentProductCart />
+            </Grid>
           </Grid>
-          <Grid item xs={12} lg={4}>
-            <PaymentProductCart />
-          </Grid>
-        </Grid>
+        ) : (
+          <NoItemCart />
+        )}
       </Box>
     </Box>
   )

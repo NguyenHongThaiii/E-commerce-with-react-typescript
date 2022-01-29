@@ -1,4 +1,4 @@
-import { Box, Typography, Breadcrumbs } from '@mui/material'
+import { Box, Typography, Breadcrumbs, LinearProgress } from '@mui/material'
 import React from 'react'
 import HomeIcon from '@mui/icons-material/Home'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
@@ -12,17 +12,22 @@ export interface CurrentState {
 
 export interface CurrentPositionProps {
   current: string
+  loading?: boolean
   positionList?: CurrentState[]
 }
 
-export default function CurrentPosition({ current, positionList = [] }: CurrentPositionProps) {
+export default function CurrentPosition({
+  current,
+  positionList = [],
+  loading,
+}: CurrentPositionProps) {
   return (
     <Box
       sx={{
         minHeight: 36,
         backgroundColor: '#fff',
         mb: 4,
-
+        position: 'relative',
         display: 'flex',
         alignItems: 'center',
         pl: 2,
@@ -77,6 +82,17 @@ export default function CurrentPosition({ current, positionList = [] }: CurrentP
           </Typography>
         )}
       </Breadcrumbs>
+
+      {loading && (
+        <LinearProgress
+          sx={{
+            position: 'absolute',
+            top: -7,
+            right: 0,
+            left: 0,
+          }}
+        />
+      )}
     </Box>
   )
 }

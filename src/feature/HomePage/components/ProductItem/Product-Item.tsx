@@ -35,6 +35,11 @@ export default function ProductItem({ product }: ProductItemProps) {
             //   xs: 506,
             // },
             // borderRadius: 4,
+            minHeight: {
+              xs: '350px',
+              md: '275px',
+            },
+
             overflow: 'hidden',
           }}
         >

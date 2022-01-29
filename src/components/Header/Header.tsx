@@ -177,7 +177,7 @@ export default function Header(props: HeaderProps) {
                   }}
                 >
                   <ButtonStyled to="/products">
-                    <Button>Products</Button>
+                    <Button>Shopping</Button>
                   </ButtonStyled>
 
                   <IconButton sx={{ mx: 0.5 }} onClick={handleClick}>

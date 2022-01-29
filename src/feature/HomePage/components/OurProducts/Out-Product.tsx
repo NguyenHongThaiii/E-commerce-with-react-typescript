@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 import productsApi from 'api/productsApi'
+import { ProductSkeleton } from 'components/SkeletonsField'
 import { ListResponse, Product } from 'models'
 import React, { useEffect, useState } from 'react'
 import ProductItem from '../ProductItem/Product-Item'
@@ -67,11 +68,15 @@ export default function OurProduct(props: OurProductProps) {
 
       <Box>
         <Grid container spacing={2}>
-          {state.map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-              <ProductItem product={product} />
-            </Grid>
-          ))}
+          {state.length > 0 ? (
+            state.map((product) => (
+              <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
+                <ProductItem product={product} />
+              </Grid>
+            ))
+          ) : (
+            <ProductSkeleton length={12} />
+          )}
         </Grid>
       </Box>
     </Box>

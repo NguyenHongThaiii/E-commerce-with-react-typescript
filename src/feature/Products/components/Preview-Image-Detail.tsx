@@ -1,4 +1,4 @@
-import { Box, Theme } from '@mui/material'
+import { Box, Skeleton, Theme } from '@mui/material'
 import { Product } from 'models'
 import React, { useState } from 'react'
 // import Swiper core and required modules
@@ -15,10 +15,12 @@ SwiperCore.use([FreeMode, Navigation, Thumbs])
 
 export interface PreviewImageDetailProps {
   product: Product
+  loading: boolean
 }
 
-export default function PreviewImageDetail({ product }: PreviewImageDetailProps) {
+export default function PreviewImageDetail({ product, loading }: PreviewImageDetailProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
+  console.log('loading', !!loading)
 
   return (
     <Box
@@ -26,8 +28,29 @@ export default function PreviewImageDetail({ product }: PreviewImageDetailProps)
         p: 2,
         border: (theme: Theme) => `1px solid ${theme.palette.grey[400]}`,
         borderRadius: 3,
+        minHeight: {
+          xs: 440,
+          sm: 940,
+          md: 500,
+          lg: 660,
+        },
       }}
     >
+      {loading && (
+        <Skeleton
+          variant="rectangular"
+          sx={{
+            width: '100%',
+            height: {
+              xs: 440,
+              sm: 940,
+              md: 500,
+              lg: 660,
+            },
+          }}
+        />
+      )}
+
       <Swiper loop={true} navigation={true} thumbs={{ swiper: thumbsSwiper }} className="mySwiper2">
         {product?.sliderList?.map((item, index) => (
           <SwiperSlide key={index}>

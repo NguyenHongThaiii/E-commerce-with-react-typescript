@@ -1,32 +1,23 @@
 import { Box, Button, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SwiperCore, { Autoplay, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import sliderApi from '../../../../api/sliderApi'
-import { ListResponse } from '../../../../models'
-import { Slider } from '../../../../models/slider'
 
 export interface SwiperFeatureProps {}
 
 export default function SwiperFeature(props: SwiperFeatureProps) {
-  const [sliders, setSliders] = useState<Slider[]>([])
+  const newSliders = [
+    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_1.jpg',
+    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_2_1.jpg',
+    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_3.jpg',
+  ]
+
   const navigate = useNavigate()
   const [index, setIndex] = useState(0)
   SwiperCore.use([Autoplay, Navigation])
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const { data }: ListResponse<Slider> = await sliderApi.getAll()
-        setSliders(data)
-      } catch (error) {
-        console.log('Fail to fetch slider', error)
-      }
-    })()
-  }, [])
 
   const handleOnClick = () => {
     navigate('/products')
@@ -48,8 +39,8 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
           disableOnInteraction: false,
         }}
       >
-        {sliders.map((slider, index) => (
-          <SwiperSlide key={slider.id} virtualIndex={index}>
+        {newSliders.map((imageUrl, index) => (
+          <SwiperSlide key={index} virtualIndex={index}>
             <Box
               sx={{
                 '& > img': {
@@ -60,7 +51,7 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
                 },
               }}
             >
-              <img src={slider.imageUrl} alt={slider.imageUrl} width="100%" />
+              <img src={imageUrl} alt={imageUrl} width="100%" />
             </Box>
           </SwiperSlide>
         ))}
@@ -69,10 +60,14 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
         sx={{
           position: 'absolute',
           top: '35%',
-          left: index === 0 ? '10%' : '50%',
+          left: index === 0 ? '10%' : '43%',
           zIndex: 1,
           maxWidth: '550px',
           transition: 'all 1.5s ease',
+          display: {
+            xs: 'none',
+            sm: 'block',
+          },
         }}
       >
         <Typography
@@ -94,7 +89,7 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
               lg: 50,
               md: 42,
               sm: 32,
-              xs: 24,
+              xs: 20,
             },
             mb: 1,
           }}

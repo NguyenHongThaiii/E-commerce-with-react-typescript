@@ -19,6 +19,11 @@ export default function CategoryItem({ category }: CategoryItemProps) {
         position: 'relative',
         borderRadius: 4,
         overflow: 'hidden',
+        minHeight: {
+          xs: '445px',
+          md: '375px',
+          lg: '244px',
+        },
       }}
     >
       <img src={category.imageUrl} alt={category.name} width="100%" />

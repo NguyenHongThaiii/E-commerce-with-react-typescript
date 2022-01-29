@@ -3,6 +3,7 @@ import { getMe } from 'app/authSlice'
 import { RootState } from 'app/store'
 import Footer from 'components/Footer/Footer'
 import Header from 'components/Header/Header'
+import NotFound from 'components/NotFound/Not-Found'
 import LoginPage from 'feature/Auth/components/pages/Login-Page'
 import CartFeature from 'feature/Cart/Cart-Feature'
 import Delivery from 'feature/HomePage/components/Delivery'
@@ -54,6 +55,7 @@ function App() {
         <Route path="/products/*" element={<ListingFeature />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/carts/*" element={<CartFeature />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       {location.pathname !== '/login' && (

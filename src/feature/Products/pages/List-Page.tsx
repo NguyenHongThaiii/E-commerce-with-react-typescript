@@ -1,19 +1,23 @@
-import { Box, Container, Grid, Pagination, Paper, Typography } from '@mui/material'
+import { Box, Container, Grid, Pagination, Typography } from '@mui/material'
 import categoriesApi from 'api/categoriesApi'
 import productsApi from 'api/productsApi'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
+import { ProductSkeleton } from 'components/SkeletonsField'
 import Slide from 'components/Slide/Slide'
 import ProductItem from 'feature/HomePage/components/ProductItem/Product-Item'
 import { Category, ListParams, ListResponse, PaginationParams, Product } from 'models'
 import queryString from 'query-string'
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ProductListFilter from '../components/Product-List-Filter'
+
 export interface ListPageProps {}
 
 export default function ListPage(props: ListPageProps) {
   const location = useLocation()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState<boolean>(false)
   const [productList, setProductList] = useState<Product[]>([])
   const [categoryList, setCategoryList] = useState<Category[]>([])
   const [pagination, setPagination] = useState<PaginationParams>({
@@ -41,12 +45,14 @@ export default function ListPage(props: ListPageProps) {
   useEffect(() => {
     ;(async () => {
       try {
+        setLoading(true)
         const { data, pagination }: ListResponse<Product> = await productsApi.getAll(filters)
         setProductList(data)
         setPagination(pagination)
       } catch (error) {
         console.log('Fail to fetch product list', error)
       }
+      setLoading(false)
     })()
   }, [filters])
 
@@ -74,6 +80,9 @@ export default function ListPage(props: ListPageProps) {
       pathname: location.pathname,
       search: queryString.stringify({ ...newFilter }),
     })
+    ;(scrollRef.current as HTMLDivElement).scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
   const handleOnChange = (newFilters: ListParams) => {
@@ -93,8 +102,9 @@ export default function ListPage(props: ListPageProps) {
         name={categoryList[indexCategory] ? categoryList[indexCategory].name : 'All'}
       />
 
-      <CurrentPosition current="Products" />
-      <Box sx={{ textAlign: 'center' }}>
+      <CurrentPosition current="Products" loading={loading} />
+
+      <Box sx={{ textAlign: 'center' }} ref={scrollRef}>
         <Typography
           component="span"
           variant="h5"
@@ -147,11 +157,15 @@ export default function ListPage(props: ListPageProps) {
         </Box>
         {/* Listing */}
         <Grid container spacing={2}>
-          {productList.map((product) => (
-            <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-              <ProductItem product={product} />
-            </Grid>
-          ))}
+          {productList.length > 0 ? (
+            productList.map((product) => (
+              <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
+                <ProductItem product={product} />
+              </Grid>
+            ))
+          ) : (
+            <ProductSkeleton length={12} />
+          )}
         </Grid>
 
         {/* pagination */}
