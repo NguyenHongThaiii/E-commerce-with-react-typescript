@@ -12,6 +12,7 @@ import {
   InputBase,
   Menu,
   MenuItem,
+  Modal,
   Theme,
   Toolbar,
   Typography,
@@ -20,12 +21,26 @@ import { styled } from '@mui/material/styles'
 import { logout } from 'app/authSlice'
 import { RootState } from 'app/store'
 import Sidebar from 'components/SideBar/Sidebar'
+import { AvatarSkeleton } from 'components/SkeletonsField/Avatar-Skeleton'
 import { totalProductListQuantity } from 'feature/Cart/Cart-Selector'
 import React, { MouseEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { getAccount } from 'utils'
 
 export interface HeaderProps {}
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+}
 
 export default function Header(props: HeaderProps) {
   const [status, setStatus] = useState(false)
@@ -33,7 +48,8 @@ export default function Header(props: HeaderProps) {
   const navigate = useNavigate()
   const userState = useSelector((state: RootState) => state.auth.user)
   const totalQuantity = useSelector(totalProductListQuantity)
-
+  const loading = useSelector((state: RootState) => state.auth.loading)
+  console.log('loading', loading)
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 20,
@@ -82,6 +98,11 @@ export default function Header(props: HeaderProps) {
     },
   }))
 
+  // modal
+  const [openModal, setOpenModal] = useState(false)
+  const handleOpenModal = () => setOpenModal(true)
+  const handleCloseModal = () => setOpenModal(false)
+
   const handleToggleSidebar = (newStatus: boolean) => {
     setStatus(newStatus)
   }
@@ -99,6 +120,7 @@ export default function Header(props: HeaderProps) {
 
   const handleLogoutUser = () => {
     dispatch(logout())
+    setOpenModal(false)
     setAnchorEl(null)
 
     setTimeout(() => {
@@ -165,43 +187,50 @@ export default function Header(props: HeaderProps) {
               </Search>
             </Box>
 
-            {userState.email ? (
-              <Box>
-                <Box
-                  component="span"
-                  sx={{
-                    display: {
-                      xs: 'none',
-                      sm: 'inline-block',
-                    },
-                  }}
-                >
-                  <ButtonStyled to="/products">
-                    <Button>Shopping</Button>
-                  </ButtonStyled>
+            {getAccount() ? (
+              <>
+                {userState.email && !loading ? (
+                  <Box>
+                    <Box
+                      component="span"
+                      sx={{
+                        display: {
+                          xs: 'none',
+                          sm: 'inline-block',
+                        },
+                      }}
+                    >
+                      <ButtonStyled to="/products">
+                        <Button>Shopping</Button>
+                      </ButtonStyled>
 
-                  <IconButton sx={{ mx: 0.5 }} onClick={handleClick}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={userState.photoURL}
-                      sx={{ width: '24px', height: '24px' }}
-                    />
-                  </IconButton>
-                </Box>
-                <ButtonStyled to="/carts">
-                  <IconButton>
-                    <Badge badgeContent={totalQuantity} color="error">
-                      <ShoppingCartIcon />
-                    </Badge>
-                  </IconButton>
-                </ButtonStyled>
-              </Box>
+                      <IconButton sx={{ mx: 0.5 }} onClick={handleClick}>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={userState.photoURL}
+                          sx={{ width: '24px', height: '24px' }}
+                        />
+                      </IconButton>
+                    </Box>
+                    <ButtonStyled to="/carts">
+                      <IconButton>
+                        <Badge badgeContent={totalQuantity} color="error">
+                          <ShoppingCartIcon />
+                        </Badge>
+                      </IconButton>
+                    </ButtonStyled>
+                  </Box>
+                ) : (
+                  <AvatarSkeleton />
+                )}
+              </>
             ) : (
               <Box
                 component="span"
                 sx={{
                   '&>a': {
                     textDecoration: 'none',
+                    ml: 1,
                   },
                 }}
               >
@@ -216,17 +245,44 @@ export default function Header(props: HeaderProps) {
                 </Link>
               </Box>
             )}
+
             {/* Menu */}
+
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleLogoutUser}>Logout</MenuItem>
+              <MenuItem onClick={handleOpenModal}>Logout</MenuItem>
             </Menu>
           </Toolbar>
         </Container>
       </AppBar>
 
       <Sidebar status={status} onClick={handleToggleSidebar} />
+
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">
+            Are you sure you want to logout from this web ?
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mt: 2,
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={handleLogoutUser}>
+              Logout
+            </Button>
+
+            <Button variant="outlined" color="error" onClick={handleCloseModal}>
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   )
 }

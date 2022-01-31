@@ -5,19 +5,31 @@ import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import { RootState } from 'app/store'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { styled } from '@mui/material'
+import { Modal, styled, Typography } from '@mui/material'
+import { logout } from 'app/authSlice'
 export interface SidebarProps {
   status: boolean
   onClick: (newStatus: boolean) => void
 }
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 380,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  borderRadius: 4,
+  p: 4,
+}
+
 export default function Sidebar({ status, onClick }: SidebarProps) {
   const userData = useSelector((state: RootState) => state.auth.user)
-  console.log('userData', userData)
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       (event.type === 'keydown' &&
@@ -72,7 +84,7 @@ export default function Sidebar({ status, onClick }: SidebarProps) {
             <ListItem component={Link} to="/">
               <LinkStyled disableRipple={true}>My profile</LinkStyled>
             </ListItem>
-            <ListItem>
+            <ListItem onClick={handleOpen}>
               <LinkStyled disableRipple={true}>
                 Logout
                 <LogoutIcon sx={{ ml: 1 }} />
@@ -89,11 +101,46 @@ export default function Sidebar({ status, onClick }: SidebarProps) {
     </Box>
   )
 
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const dispatch = useDispatch()
+
+  const handleLogoutUser = () => {
+    dispatch(logout())
+    setOpen(false)
+    toggleDrawer(false)
+  }
   return (
     <div>
       <Drawer anchor="left" open={status} onClose={toggleDrawer(false)}>
         {list('left')}
       </Drawer>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">
+            Are you sure you want to logout from this web ?
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mt: 2,
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={handleLogoutUser}>
+              Logout
+            </Button>
+
+            <Button variant="outlined" color="error" onClick={handleClose}>
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </div>
   )
 }

@@ -26,7 +26,7 @@ export default function PaymentProductCart(props: PaymentProductCartProps) {
       >
         <Typography>Total Products</Typography>
         <Typography
-          sx={{ color: (theme: Theme) => theme.palette.primary.light, fontWeight: 'bold' }}
+          sx={{ color: (theme: Theme) => theme.palette.primary.main, fontWeight: 'bold' }}
         >
           {totalQuantity}
         </Typography>

@@ -20,7 +20,6 @@ export interface PreviewImageDetailProps {
 
 export default function PreviewImageDetail({ product, loading }: PreviewImageDetailProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
-  console.log('loading', !!loading)
 
   return (
     <Box

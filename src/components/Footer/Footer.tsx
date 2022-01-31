@@ -40,8 +40,28 @@ export default function Footer(props: FooterProps) {
     <Box mt={8}>
       <Box sx={{ backgroundColor: '#eaeaea' }}>
         <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} lg={3}>
+          <Grid
+            container
+            spacing={3}
+            sx={{
+              textAlign: {
+                xs: 'center',
+                sm: 'left',
+              },
+            }}
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              lg={3}
+              sx={{
+                mb: 2,
+                display: { xs: 'flex', sm: 'block' },
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
               <Typography
                 component="h3"
                 variant="h4"
