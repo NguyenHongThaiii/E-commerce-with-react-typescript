@@ -26,7 +26,7 @@ const getFirebaseToken = async () => {
 }
 
 const axiosClient = axios.create({
-  baseURL: 'https://js-ecommerce-api.herokuapp.com/api',
+  baseURL: import.meta.env.VITE_TS_ECOMMERCE as string,
   headers: {
     'Content-type': 'application/json',
   },

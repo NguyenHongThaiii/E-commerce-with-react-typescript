@@ -90,7 +90,7 @@ export default function ProductItem({ product }: ProductItemProps) {
         >
           {product.name}
         </Typography>
-        <Typography>{format(product.price)}</Typography>
+        <Typography>{format(product.price)} - Dollars</Typography>
       </Box>
     </Box>
   )

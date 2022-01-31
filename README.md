@@ -15,12 +15,15 @@
 - Redirect detail page when click on image in cart item (COMPLETED)
 - Show modal when click logout (COMPLETED)
 - Fix UI footer mobile (COMPLETED)
+- Await when changes quantity product & UI (NONE)
+- Currency VND to $ (COMPLETED)
+- Add link to icon in footer (COMPLETED)
+- Variables environment (COMPLETED)
 
 - Search
-- Variables environment
-- Await when changes quantity product & UI
-- All language vietnamese to english
-- Add link to icon in footer
+- All language vietnamese to english (PROCESSING)
+
+- Radio delivery payment (OPTIONAL)
 - Page login (PROCESSING)
 - Profile page (ADVANCE)
 - Payment with stripe (ADVANCE)

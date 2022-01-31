@@ -20,10 +20,11 @@ function App() {
   const dispatch = useDispatch()
   const location = useLocation()
   const cartList = useSelector((state: RootState) => state.auth.user.cartList) || []
+
   // Configure Firebase.
   const config = {
-    apiKey: 'AIzaSyBtZHZgDQlGOZIexBjtfH46VldRv9CXV3g',
-    authDomain: 'authentication-ecommerce-bec4b.firebaseapp.com',
+    apiKey: import.meta.env.VITE_APP_FIREBASE_API,
+    authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
     // ...
   }
   firebase.initializeApp(config)

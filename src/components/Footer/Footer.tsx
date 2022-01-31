@@ -5,7 +5,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import YouTubeIcon from '@mui/icons-material/YouTube'
-import { Box, Container, Grid, Theme, Typography } from '@mui/material'
+import { Box, Container, Grid, Link, Theme, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import React from 'react'
 
@@ -78,7 +78,7 @@ export default function Footer(props: FooterProps) {
 
               <TextComponent>
                 <AddLocationAltOutlinedIcon />
-                ấp Thạnh Sơn, xã Thạnh Tây, huyện Tân Biên, tỉnh Tây Ninh
+                district Tan Bien, province Tay Ninh
               </TextComponent>
 
               <TextComponent>
@@ -95,25 +95,70 @@ export default function Footer(props: FooterProps) {
                 sx={{
                   display: 'flex',
                   align: 'center',
-                  '& > svg + svg': {
+                  '& > a + a': {
                     ml: 2,
                   },
                 }}
               >
-                <FacebookOutlinedIcon
-                  sx={{ color: (theme: Theme) => theme.palette.primary.main }}
-                />
-                <InstagramIcon
+                <Link
                   sx={{
-                    background: (theme: Theme) =>
-                      `-webkit-linear-gradient(${theme.palette.error.light}, ${theme.palette.warning.light}, ${theme.palette.success.light})`,
-                    webkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    // color: (theme: Theme) => theme.palette.warning.light,
+                    cursor: 'pointer',
                   }}
-                />
-                <GitHubIcon sx={{ color: '#000' }} />
-                <YouTubeIcon sx={{ color: (theme: Theme) => theme.palette.error.main }} />
+                  underline="none"
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://www.facebook.com/profile.php?id=100020256826562"
+                >
+                  <FacebookOutlinedIcon
+                    sx={{
+                      color: (theme: Theme) => theme.palette.primary.main,
+                    }}
+                  />
+                </Link>
+
+                <Link
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  underline="none"
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://www.facebook.com/profile.php?id=100020256826562"
+                >
+                  <InstagramIcon
+                    sx={{
+                      background: (theme: Theme) =>
+                        `-webkit-linear-gradient(${theme.palette.error.light}, ${theme.palette.warning.light}, ${theme.palette.success.light})`,
+                      webkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      // color: (theme: Theme) => theme.palette.warning.light,
+                    }}
+                  />
+                </Link>
+
+                <Link
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  underline="none"
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://github.com/NguyenHongThaiii"
+                >
+                  <GitHubIcon sx={{ color: '#000' }} />
+                </Link>
+
+                <Link
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  underline="none"
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://www.youtube.com/channel/UCC19sOvPaEU5jaDKaFbBFCQ"
+                >
+                  <YouTubeIcon sx={{ color: (theme: Theme) => theme.palette.error.main }} />
+                </Link>
               </Box>
             </Grid>
 

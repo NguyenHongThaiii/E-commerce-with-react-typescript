@@ -1,9 +1,10 @@
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Theme, Typography } from '@mui/material'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
 import ProductCartMobile from '../components/ProductCartMobile/Product-Cart-Mobile'
@@ -88,7 +89,33 @@ export default function CartPage(props: ICartPageProps) {
               >
                 <ProductCartMobile cartList={cartList} />
               </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  my: 2,
+                }}
+              >
+                <Button
+                  color="primary"
+                  variant="contained"
+                  sx={{
+                    '&>a': {
+                      textDecoration: 'none',
+                      color: '#fff',
+                    },
+                  }}
+                >
+                  <Link to="/products">Continue Shopping </Link>
+                </Button>
+                <Button color="error" variant="contained">
+                  Clear Your Cart
+                </Button>
+              </Box>
             </Grid>
+
             <Grid item xs={12} lg={4}>
               <PaymentProductCart />
             </Grid>

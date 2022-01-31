@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mui/material'
 import { Cart } from 'models'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { format } from 'utils'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import RemoveIcon from '@mui/icons-material/Remove'
@@ -30,6 +30,8 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
 
   const dispatch: Dispatch = useDispatch()
   const navigate = useNavigate()
+  const timeRef = useRef<any>(null)
+
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
