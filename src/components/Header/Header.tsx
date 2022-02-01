@@ -27,6 +27,7 @@ import React, { MouseEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { getAccount } from 'utils'
+import SearchFormHeader from './components/Search-Form-Header'
 
 export interface HeaderProps {}
 
@@ -179,12 +180,14 @@ export default function Header(props: HeaderProps) {
             </Typography>
 
             <Box sx={{ textAlign: 'center' }}>
-              <Search>
+              <SearchFormHeader />
+
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-              </Search>
+              </Search> */}
             </Box>
 
             {getAccount() ? (

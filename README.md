@@ -19,19 +19,19 @@
 - Currency VND to $ (COMPLETED)
 - Add link to icon in footer (COMPLETED)
 - Variables environment (COMPLETED)
+- Search (TEMPORARILY COMPLETED)
 
-- Search
-- All language vietnamese to english (PROCESSING)
+* All language vietnamese to english (PROCESSING - BE)
 
-- Radio delivery payment (OPTIONAL)
-- Page login (PROCESSING)
-- Profile page (ADVANCE)
-- Payment with stripe (ADVANCE)
+* Radio delivery payment (OPTIONAL)
+* Page login (PROCESSING)
+* Profile page (ADVANCE)
+* Payment with stripe (ADVANCE)
 
   ////////////////////////////////////////////////////////////////
 
-- HomePage
-- Product Page
-- Detail Product Page
-- Cart Page
-- Login Page
+* HomePage
+* Product Page
+* Detail Product Page
+* Cart Page
+* Login Page

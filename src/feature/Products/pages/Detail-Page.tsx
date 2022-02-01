@@ -31,7 +31,7 @@ export default function DetailPage(props: DetailPageProps) {
       }
       setLoading(false)
     })()
-  }, [])
+  }, [productId])
 
   const initialValues: QuantityState = {
     quantity: 1,
