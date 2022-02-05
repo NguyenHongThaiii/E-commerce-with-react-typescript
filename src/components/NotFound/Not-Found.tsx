@@ -26,9 +26,11 @@ export default function NotFound(props: NotFoundProps) {
         size="large"
         sx={{
           mt: 3,
+          p: 0,
           '& > a': {
             textDecoration: 'none',
             color: '#fff',
+            p: '8px 22px',
           },
         }}
       >

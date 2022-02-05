@@ -70,6 +70,10 @@ export default function SearchFormHeader(props: SearchFormHeaderProps) {
     setAnchorEl(null)
   }
 
+  const handleSearchIconClick = () => {
+    navigate(`/products?name_like=${searchRef.current?.value}`)
+  }
+
   const handleOnSubmit = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (!searchRef.current?.value) return
@@ -105,7 +109,17 @@ export default function SearchFormHeader(props: SearchFormHeaderProps) {
             id="searchByName"
             label="Search By Name"
             defaultValue=""
-            endAdornment={<Search />}
+            endAdornment={
+              <Search
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    opacity: 0.7,
+                  },
+                }}
+                onClick={handleSearchIconClick}
+              />
+            }
             inputRef={searchRef}
             onChange={handleOnSearchChange}
           />

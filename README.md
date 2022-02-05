@@ -20,12 +20,13 @@
 - Add link to icon in footer (COMPLETED)
 - Variables environment (COMPLETED)
 - Search (TEMPORARILY COMPLETED)
+- Not found when wrong url (COMPLETED)
+- modal add to card when user has not login (COMPLETED)
+- All language vietnamese to english (COMPLETED)
 
-* All language vietnamese to english (PROCESSING - BE)
+- Static image
+
 * Page login (PROCESSING)
-
-- Not found when wrong url
-
 * Radio delivery payment (OPTIONAL)
 * Profile page (ADVANCE)
 * Payment with stripe (ADVANCE)
