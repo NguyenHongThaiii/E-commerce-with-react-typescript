@@ -2,6 +2,7 @@ import { Box, Container, Grid, Pagination, Typography } from '@mui/material'
 import categoriesApi from 'api/categoriesApi'
 import productsApi from 'api/productsApi'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
+import NotFound from 'components/NotFound/Not-Found'
 import { ProductSkeleton } from 'components/SkeletonsField'
 import Slide from 'components/Slide/Slide'
 import ProductItem from 'feature/HomePage/components/ProductItem/Product-Item'
@@ -18,14 +19,13 @@ export default function ListPage(props: ListPageProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(false)
-  const [productList, setProductList] = useState<Product[]>([])
+  const [productList, setProductList] = useState<Product[]>()
   const [categoryList, setCategoryList] = useState<Category[]>([])
   const [pagination, setPagination] = useState<PaginationParams>({
     _page: 1,
     _limit: 12,
     _totalRows: 1,
   })
-
   const filters = useMemo(() => {
     const params = queryString.parse(location.search)
     const queryParams = {
@@ -157,8 +157,8 @@ export default function ListPage(props: ListPageProps) {
         </Box>
         {/* Listing */}
         <Grid container spacing={2}>
-          {productList.length > 0 ? (
-            productList.map((product) => (
+          {productList ? (
+            productList?.map((product) => (
               <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
                 <ProductItem product={product} />
               </Grid>
@@ -166,26 +166,30 @@ export default function ListPage(props: ListPageProps) {
           ) : (
             <ProductSkeleton length={12} />
           )}
+          {productList?.length === 0 && <NotFound />}
         </Grid>
 
         {/* pagination */}
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        {productList?.length !== 0 && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
 
-            mt: 3,
-          }}
-        >
-          <Pagination
-            page={pagination._page}
-            count={Math.ceil(pagination._totalRows / pagination._limit)}
-            color="primary"
-            size="large"
-            onChange={handlePageChange}
-          />
-        </Box>
+              mt: 3,
+            }}
+          >
+            <Pagination
+              page={pagination._page}
+              count={Math.ceil(pagination._totalRows / pagination._limit)}
+              color="primary"
+              size="large"
+              onChange={handlePageChange}
+            />
+          </Box>
+        )}
+
         {/* </Paper> */}
       </Container>
     </Box>

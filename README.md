@@ -22,9 +22,11 @@
 - Search (TEMPORARILY COMPLETED)
 
 * All language vietnamese to english (PROCESSING - BE)
+* Page login (PROCESSING)
+
+- Not found when wrong url
 
 * Radio delivery payment (OPTIONAL)
-* Page login (PROCESSING)
 * Profile page (ADVANCE)
 * Payment with stripe (ADVANCE)
 

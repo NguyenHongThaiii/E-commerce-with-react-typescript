@@ -20,6 +20,7 @@ export interface PreviewImageDetailProps {
 
 export default function PreviewImageDetail({ product, loading }: PreviewImageDetailProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
+  console.log(product?.sliderList)
 
   return (
     <Box
@@ -49,11 +50,14 @@ export default function PreviewImageDetail({ product, loading }: PreviewImageDet
           }}
         />
       )}
-
       <Swiper loop={true} navigation={true} thumbs={{ swiper: thumbsSwiper }} className="mySwiper2">
         {product?.sliderList?.map((item, index) => (
           <SwiperSlide key={index}>
-            <img src={item} alt={item} width="100%" />
+            <img
+              src={item || 'https://via.placeholder.com/150'}
+              alt="https://via.placeholder.com/150"
+              width="100%"
+            />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -69,7 +73,11 @@ export default function PreviewImageDetail({ product, loading }: PreviewImageDet
       >
         {product?.sliderList?.map((item, index) => (
           <SwiperSlide key={index}>
-            <img src={item} alt={item} width="100%" />
+            <img
+              src={item || 'https://via.placeholder.com/150'}
+              alt="https://via.placeholder.com/150"
+              width="100%"
+            />
           </SwiperSlide>
         ))}
       </Swiper>

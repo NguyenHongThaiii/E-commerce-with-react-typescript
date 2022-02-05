@@ -26,7 +26,11 @@ export default function CategoryItem({ category }: CategoryItemProps) {
         },
       }}
     >
-      <img src={category.imageUrl} alt={category.name} width="100%" />
+      <img
+        src={category.imageUrl || 'https://via.placeholder.com/180'}
+        alt={category.name}
+        width="100%"
+      />
 
       <Box
         sx={{

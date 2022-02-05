@@ -94,7 +94,11 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
             }}
             onClick={() => handleToRedirectDetailPage(cart.product.id)}
           >
-            <img src={cart.product.imageUrl} alt={cart.product.name} width="40px" />
+            <img
+              src={cart.product.imageUrl || 'https://via.placeholder.com/100'}
+              alt={cart.product.name}
+              width="40px"
+            />
 
             <Box
               sx={{

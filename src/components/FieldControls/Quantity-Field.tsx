@@ -32,13 +32,13 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
     >
       <IconButton
         size="small"
-        disabled={value <= 1}
+        disabled={Number.parseInt(value) <= 1}
         sx={{
           border: (theme: Theme) => `1px solid ${theme.palette.grey[300]}`,
           borderRadius: 0,
           mr: 2,
         }}
-        onClick={() => setValue(name, value < 1 ? 1 : value - 1)}
+        onClick={() => setValue(name, Number.parseInt(value) < 1 ? 1 : Number.parseInt(value) - 1)}
       >
         <RemoveIcon />
       </IconButton>
@@ -47,7 +47,7 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
           size="small"
           onChange={onChange}
           onBlur={onBlur}
-          value={value || 1}
+          value={Number.parseInt(value) || ''}
           name={name}
           label={label}
           error={invalid}
@@ -58,13 +58,13 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
       </Box>
       <IconButton
         size="small"
-        disabled={value > 20}
+        disabled={Number.parseInt(value) > 20}
         sx={{
           border: (theme: Theme) => `1px solid ${theme.palette.grey[300]}`,
           borderRadius: 0,
           ml: 2,
         }}
-        onClick={() => setValue(name, value > 20 ? 1 : value + 1)}
+        onClick={() => setValue(name, Number.parseInt(value) > 20 ? 1 : Number.parseInt(value) + 1)}
       >
         <AddIcon />
       </IconButton>

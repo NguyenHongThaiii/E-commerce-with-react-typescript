@@ -58,17 +58,30 @@ export default function SearchFormHeader(props: SearchFormHeaderProps) {
     setAnchorEl(null)
   }
 
-  const handleClickToDetailPage = (id: string) => {
-    navigate(`/products/${id}`)
+  const handleClickToDetailPage = (id: string, index: number) => {
+    if (searchRef.current) {
+      searchRef.current.value = state[index].name
+    }
+
+    if (id) {
+      navigate(`/products/${id}`)
+    }
+
     setAnchorEl(null)
   }
 
+  const handleOnSubmit = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (!searchRef.current?.value) return
+    navigate(`/products?name_like=${searchRef.current?.value}`)
+  }
+
   return (
-    <>
+    <Box component="form" onSubmit={handleOnSubmit}>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {state.length > 0 &&
-          state.map((product: Product) => (
-            <MenuItem onClick={() => handleClickToDetailPage(product.id)} key={product.id}>
+          state.map((product: Product, index: number) => (
+            <MenuItem onClick={() => handleClickToDetailPage(product.id, index)} key={product.id}>
               <Search sx={{ mr: 0.5 }} />
               {product.name}
             </MenuItem>
@@ -98,6 +111,6 @@ export default function SearchFormHeader(props: SearchFormHeaderProps) {
           />
         </FormControl>
       </Box>
-    </>
+    </Box>
   )
 }

@@ -18,6 +18,7 @@ export default function ProductItem({ product }: ProductItemProps) {
       navigate(`/products/${product.id}`)
     }, 500)
   }
+
   return (
     <Box
       sx={{
@@ -43,7 +44,11 @@ export default function ProductItem({ product }: ProductItemProps) {
             overflow: 'hidden',
           }}
         >
-          <img src={product.imageUrl} alt={product.name} width="100%" />
+          <img
+            src={product.imageUrl || 'https://via.placeholder.com/270'}
+            alt={product.name}
+            width="100%"
+          />
         </Box>
         <Box
           sx={{

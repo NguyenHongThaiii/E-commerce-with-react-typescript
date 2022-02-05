@@ -2,6 +2,7 @@ import { Box, Container, Grid, Paper, Theme } from '@mui/material'
 import productsApi from 'api/productsApi'
 import { addToCart } from 'app/authSlice'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
+import NotFound from 'components/NotFound/Not-Found'
 import { InfoDetailSkeleton } from 'components/SkeletonsField/Info-Detail-Skeleton'
 import Slide from 'components/Slide/Slide'
 import { Cart, Product, QuantityState } from 'models'
@@ -19,7 +20,7 @@ export default function DetailPage(props: DetailPageProps) {
   const dispatch = useDispatch()
   const [product, setProduct] = useState<Product>()
   const [loading, setLoading] = useState<boolean>(false)
-
+  const [notFound, setNotFound] = useState<boolean>(false)
   useEffect(() => {
     ;(async () => {
       try {
@@ -28,6 +29,7 @@ export default function DetailPage(props: DetailPageProps) {
         setProduct(response)
       } catch (error) {
         console.log('Fail to fetch product by id', error)
+        setNotFound(true)
       }
       setLoading(false)
     })()
@@ -46,6 +48,7 @@ export default function DetailPage(props: DetailPageProps) {
     const actions = addToCart(data)
     await dispatch(actions)
   }
+  if (notFound) return <NotFound />
   return (
     <Box>
       <Slide

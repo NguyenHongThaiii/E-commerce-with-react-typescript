@@ -64,7 +64,12 @@ export default function InfoProductCartMobile({ cart }: InfoProductCartMobilePro
             }}
             onClick={() => handleToRedirectDetailPage(cart.product.id)}
           >
-            <img src={cart.product.imageUrl} alt={cart.product.name} width="100%" height="100%" />
+            <img
+              src={cart.product.imageUrl || 'https://via.placeholder.com/270'}
+              alt={cart.product.name}
+              width="100%"
+              height="100%"
+            />
           </Box>
         </Grid>
         <Grid item xs={8}>

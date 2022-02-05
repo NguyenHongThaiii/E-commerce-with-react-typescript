@@ -51,7 +51,11 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
                 },
               }}
             >
-              <img src={imageUrl} alt={imageUrl} width="100%" />
+              <img
+                src={imageUrl || 'https://via.placeholder.com/1280'}
+                alt={'https://via.placeholder.com/1280'}
+                width="100%"
+              />
             </Box>
           </SwiperSlide>
         ))}

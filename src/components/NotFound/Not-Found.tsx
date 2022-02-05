@@ -11,12 +11,14 @@ export default function NotFound(props: NotFoundProps) {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        mt: 3,
+        m: '24px auto',
+        maxWidth: 1280,
       }}
     >
       <img
         src="https://www.pngitem.com/pimgs/m/561-5616833_image-not-found-png-not-found-404-png.png"
         alt="Not found page"
+        width="100%"
       />
 
       <Button

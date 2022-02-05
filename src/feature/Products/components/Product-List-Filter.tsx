@@ -37,7 +37,10 @@ export default function ProductListFilter({ categoryList, onChange }: ProductLis
   }, [location.search])
 
   const defaultValue = useMemo<any>(() => {
-    const name_like = queryString.parse(location.search)?.name_like
+    const name_like = queryString.parse(location.search)?.name_like || ''
+    if (searchRef.current) {
+      searchRef.current.value = name_like as string
+    }
     return name_like
   }, [location.search])
   const handleSelectChange = (e: SelectChangeEvent<{ name: string; value: string }>) => {
