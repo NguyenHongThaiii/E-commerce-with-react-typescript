@@ -8,8 +8,8 @@ export interface PaymentProductCartProps {}
 
 export default function PaymentProductCart(props: PaymentProductCartProps) {
   const totalCost = useSelector(totalProductListCost)
-
   const totalQuantity = useSelector(totalProductListQuantity)
+
   return (
     <Box component={Paper} sx={{ p: 2 }}>
       <Typography component="h2" variant="h6" sx={{ borderBottom: '1px solid #0000001f', pb: 1 }}>

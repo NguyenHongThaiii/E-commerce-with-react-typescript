@@ -14,6 +14,7 @@ export interface ICartPageProps {}
 
 export default function CartPage(props: ICartPageProps) {
   const cartList = useSelector((state: RootState) => state.auth.user.cartList)
+
   return (
     <Box>
       <Slide

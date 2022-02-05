@@ -11,9 +11,10 @@ export interface ProductItemProps {
 }
 
 export default function ProductItem({ product }: ProductItemProps) {
-  const [heart, setHeart] = useState(false)
+  const [heart, setHeart] = useState<boolean>(false)
   const navigate = useNavigate()
-  const handleToDetailPage = () => {
+
+  const handleToDetailPage = (): void => {
     setTimeout(() => {
       navigate(`/products/${product.id}`)
     }, 500)
@@ -29,13 +30,6 @@ export default function ProductItem({ product }: ProductItemProps) {
       <Box sx={{ position: 'relative' }} onClick={handleToDetailPage}>
         <Box
           sx={{
-            // height: {
-            //   lg: 276,
-            //   md: 293,
-            //   sm: 398,
-            //   xs: 506,
-            // },
-            // borderRadius: 4,
             minHeight: {
               xs: '350px',
               md: '275px',

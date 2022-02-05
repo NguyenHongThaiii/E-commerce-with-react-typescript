@@ -25,6 +25,7 @@
 - All language vietnamese to english (COMPLETED)
 
 - Static image
+- Deploy to vercel
 
 * Page login (PROCESSING)
 * Radio delivery payment (OPTIONAL)

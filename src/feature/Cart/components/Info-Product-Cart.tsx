@@ -30,7 +30,6 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
 
   const dispatch: Dispatch = useDispatch()
   const navigate = useNavigate()
-  const timeRef = useRef<any>(null)
 
   const style = {
     position: 'absolute' as 'absolute',

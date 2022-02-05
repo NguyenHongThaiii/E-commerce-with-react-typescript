@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import productsApi from 'api/productsApi'
-import { ListResponse, Product } from 'models'
+import { ListParams, ListResponse, Product } from 'models'
 import queryString from 'query-string'
 import React, { ChangeEvent, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -19,7 +19,7 @@ export interface SearchFormHeaderProps {}
 
 export default function SearchFormHeader(props: SearchFormHeaderProps) {
   const [state, setState] = useState<Product[]>([])
-  const [value, setValue] = useState<any>()
+  const [value, setValue] = useState<ListParams>({})
   const timeRef = useRef<any>(null)
   const searchRef = useRef<HTMLInputElement>()
   const navigate = useNavigate()

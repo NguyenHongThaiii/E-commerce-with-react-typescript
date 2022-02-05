@@ -1,10 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import firebase from 'firebase/compat/app'
+import { getAccount } from 'utils'
 
 const getFirebaseToken = async () => {
   const currentUser = firebase.auth().currentUser
   if (currentUser) return currentUser.getIdToken()
-  const hasLogin = localStorage.getItem('firebaseui::rememberedAccounts')
+  const hasLogin = getAccount()
   if (!hasLogin) return null
 
   return new Promise((resolve, reject) => {
@@ -33,10 +34,10 @@ const axiosClient = axios.create({
 })
 
 axiosClient.interceptors.request.use(
-  async function (config: AxiosRequestConfig | any) {
+  async function (config: AxiosRequestConfig) {
     // Do something before request is sent
     const token = await getFirebaseToken()
-    if (token) {
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
 
