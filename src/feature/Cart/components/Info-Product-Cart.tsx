@@ -1,23 +1,23 @@
+import AddIcon from '@mui/icons-material/Add'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import RemoveIcon from '@mui/icons-material/Remove'
 import {
   Box,
+  Button,
   IconButton,
+  Modal,
   TableCell,
   TableRow,
   Theme,
   Typography,
-  Modal,
-  Button,
 } from '@mui/material'
-import { Cart } from 'models'
-import React, { useRef, useState } from 'react'
-import { format } from 'utils'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import RemoveIcon from '@mui/icons-material/Remove'
-import AddIcon from '@mui/icons-material/Add'
-import { useDispatch } from 'react-redux'
 import { Dispatch } from '@reduxjs/toolkit'
 import { removeFromCart, setQuantity } from 'app/authSlice'
+import { Cart } from 'models'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { format } from 'utils'
 
 export interface InfoProductCartProps {
   cart: Cart

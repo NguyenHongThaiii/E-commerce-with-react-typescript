@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button } from '@mui/material'
 import { QuantityField } from 'components/FieldControls'
-import { Product, QuantityState } from 'models'
+import { QuantityState } from 'models'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'

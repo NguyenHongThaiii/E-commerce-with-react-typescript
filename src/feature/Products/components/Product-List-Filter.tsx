@@ -1,3 +1,4 @@
+import Search from '@mui/icons-material/Search'
 import {
   Box,
   FormControl,
@@ -9,11 +10,10 @@ import {
   SelectChangeEvent,
   Theme,
 } from '@mui/material'
-import React, { ChangeEvent, useMemo, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import queryString from 'query-string'
-import Search from '@mui/icons-material/Search'
 import { Category, ListParams } from 'models'
+import queryString from 'query-string'
+import React, { ChangeEvent, useMemo, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export interface ProductListFilterProps {
   categoryList: Category[]
