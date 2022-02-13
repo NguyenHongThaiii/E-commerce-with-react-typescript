@@ -19,7 +19,6 @@
 - Currency VND to $ (COMPLETED)
 - Add link to icon in footer (COMPLETED)
 - Variables environment (COMPLETED)
-- Search (TEMPORARILY COMPLETED)
 - Not found when wrong url (COMPLETED)
 - modal add to card when user has not login (COMPLETED)
 - All language vietnamese to english (COMPLETED)
@@ -31,11 +30,26 @@
 * Radio delivery payment (OPTIONAL)
 * Profile page (ADVANCE)
 * Payment with stripe (ADVANCE)
+* Page favorite products (heart)
+
+  ////////////////////////////////////////////////////////////////
+  FIX UI WHEN DEPLOYED
+
+- Auto slide to head when click category to product page
+- Icon search flex in text
+- Through line text is passed limit size
+- Limit pagination when UI mobile
+- 404 not found when redirect other page
+- Icon heart fix z-index
+- Assign event button clear your cart
+- Search (TEMPORARILY COMPLETED)
+- Email & location in footer
+- Fix url when click shop now & back to page
 
   ////////////////////////////////////////////////////////////////
 
-* HomePage
-* Product Page
-* Detail Product Page
-* Cart Page
-* Login Page
+- HomePage
+- Product Page
+- Detail Product Page
+- Cart Page
+- Login Page
