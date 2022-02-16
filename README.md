@@ -35,17 +35,20 @@
   ////////////////////////////////////////////////////////////////
   FIX UI WHEN DEPLOYED
 
-- Auto slide to head when click category to product page
-- Icon search flex in text
-- Through line text is passed limit size
-- Limit pagination when UI mobile
-- 404 not found when redirect other page
-- Icon heart fix z-index
-- Assign event button clear your cart
+- Auto slide to head when click category to product page (TEMPORARILY COMPLETED)
+- Icon search flex in text (COMPLETED)
+- Through line text is passed limit size (COMPLETED)
+- Limit pagination when UI mobile (COMPLETED)
+- Icon heart fix z-index (COMPLETED)
 - Search (TEMPORARILY COMPLETED)
+- Assign event button clear your cart (COMPLETED )
+- Show button swiper when mobile (COMPLETED)
+
+- 404 not found when redirect other page
 - Email & location in footer
 - Fix url when click shop now & back to page
-
+- Change header to position fixed (OPTIONAL)
+- Event icon search in product item
   ////////////////////////////////////////////////////////////////
 
 - HomePage

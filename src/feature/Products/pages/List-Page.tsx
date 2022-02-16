@@ -52,6 +52,10 @@ export default function ListPage(props: ListPageProps) {
       } catch (error) {
         console.log('Fail to fetch product list', error)
       }
+      ;(scrollRef.current as HTMLDivElement).scrollIntoView({
+        behavior: 'smooth',
+      })
+
       setLoading(false)
     })()
   }, [filters])
@@ -185,6 +189,7 @@ export default function ListPage(props: ListPageProps) {
               count={Math.ceil(pagination._totalRows / pagination._limit)}
               color="primary"
               size="large"
+              siblingCount={0}
               onChange={handlePageChange}
             />
           </Box>

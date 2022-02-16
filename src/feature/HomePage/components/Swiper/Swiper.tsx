@@ -64,14 +64,10 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
         sx={{
           position: 'absolute',
           top: '35%',
-          left: index === 0 ? '10%' : '43%',
+          left: index === 0 ? '12%' : '43%',
           zIndex: 1,
           maxWidth: '550px',
           transition: 'all 1.5s ease',
-          display: {
-            xs: 'none',
-            sm: 'block',
-          },
         }}
       >
         <Typography
@@ -81,9 +77,13 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
               sm: 18,
               xs: 16,
             },
+            display: {
+              xs: 'none',
+              md: 'block',
+            },
           }}
         >
-          Fashion Trend 2021
+          Fashion Trend 2022
         </Typography>
         <Typography
           variant="h4"

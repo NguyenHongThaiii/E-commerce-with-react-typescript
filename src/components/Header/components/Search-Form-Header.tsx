@@ -104,7 +104,7 @@ export default function SearchFormHeader(props: SearchFormHeaderProps) {
       </Menu>
       <Box onClick={handleClose}>
         <FormControl fullWidth variant="outlined" size="small">
-          <InputLabel htmlFor="searchByName">Search By Name</InputLabel>
+          <InputLabel htmlFor="searchByName">Search</InputLabel>
           <OutlinedInput
             id="searchByName"
             label="Search By Name"

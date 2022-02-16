@@ -6,6 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Product } from 'models'
 import { format } from 'utils'
 import { useNavigate } from 'react-router-dom'
+import { MouseEvent } from 'react'
 export interface ProductItemProps {
   product: Product
 }
@@ -20,6 +21,15 @@ export default function ProductItem({ product }: ProductItemProps) {
     }, 500)
   }
 
+  const preventBubbleClick = (e: MouseEvent): void => {
+    e.stopPropagation()
+  }
+
+  const handleClickHeart = (e: MouseEvent): void => {
+    e.stopPropagation()
+    setHeart((heart: boolean) => !heart)
+  }
+
   return (
     <Box
       sx={{
@@ -27,7 +37,7 @@ export default function ProductItem({ product }: ProductItemProps) {
         overflow: 'hidden',
       }}
     >
-      <Box sx={{ position: 'relative' }} onClick={handleToDetailPage}>
+      <Box sx={{ position: 'relative', zIndex: 100 }} onClick={handleToDetailPage}>
         <Box
           sx={{
             minHeight: {
@@ -65,12 +75,24 @@ export default function ProductItem({ product }: ProductItemProps) {
             },
           }}
         >
-          <IconButton>
+          <IconButton onClick={preventBubbleClick}>
             <SearchIcon />
           </IconButton>
 
-          <IconButton onClick={() => setHeart((heart) => !heart)}>
-            {!heart ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+          <IconButton onClick={handleClickHeart}>
+            {!heart ? (
+              <FavoriteBorderIcon
+                sx={{
+                  zIndex: 1000,
+                }}
+              />
+            ) : (
+              <FavoriteIcon
+                sx={{
+                  zIndex: 1000,
+                }}
+              />
+            )}
           </IconButton>
         </Box>
       </Box>

@@ -1,9 +1,11 @@
 import { Box, Button, Grid, Paper, Theme, Typography } from '@mui/material'
+import { Dispatch } from '@reduxjs/toolkit'
+import { clearYourCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
@@ -14,7 +16,11 @@ export interface ICartPageProps {}
 
 export default function CartPage(props: ICartPageProps) {
   const cartList = useSelector((state: RootState) => state.auth.user.cartList)
+  const dispatch: Dispatch = useDispatch()
 
+  const handleClearAllCart = (): void => {
+    dispatch(clearYourCart())
+  }
   return (
     <Box>
       <Slide
@@ -111,7 +117,7 @@ export default function CartPage(props: ICartPageProps) {
                 >
                   <Link to="/products">Continue Shopping </Link>
                 </Button>
-                <Button color="error" variant="contained">
+                <Button color="error" variant="contained" onClick={handleClearAllCart}>
                   Clear Your Cart
                 </Button>
               </Box>

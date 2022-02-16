@@ -115,6 +115,18 @@ const authSlice = createSlice({
         return
       }
     },
+    clearYourCart(state: AuthState) {
+      const uid = getAccount().uid
+      const listUserForCartList = getCartListOfAccounts()
+      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+
+      if (indexUser >= 0) {
+        state.user.cartList.splice(0)
+        listUserForCartList[indexUser]?.cartList.splice(0)
+        setCartListOfAccounts([...listUserForCartList])
+        setAccount({ ...state.user })
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getMe.pending, (state: AuthState) => {
@@ -142,7 +154,7 @@ const authSlice = createSlice({
   },
 })
 
-export const { logout, addToCart, removeFromCart, setQuantity } = authSlice.actions
+export const { logout, addToCart, removeFromCart, setQuantity, clearYourCart } = authSlice.actions
 const authReducer = authSlice.reducer
 
 export default authReducer
