@@ -49,6 +49,7 @@
 - Fix url when click shop now & back to page
 - Change header to position fixed (OPTIONAL)
 - Event icon search in product item
+- Fix width product cart page mobile size
   ////////////////////////////////////////////////////////////////
 
 - HomePage
