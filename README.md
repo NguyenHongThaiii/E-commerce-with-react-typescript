@@ -50,6 +50,8 @@
 - Change header to position fixed (OPTIONAL)
 - Event icon search in product item
 - Fix width product cart page mobile size
+- Modal when clear all cart
+- Fix size image cart empty
   ////////////////////////////////////////////////////////////////
 
 - HomePage

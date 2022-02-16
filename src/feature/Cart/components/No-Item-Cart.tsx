@@ -11,6 +11,12 @@ export default function NoItemCart(props: NoItemCartProps) {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
+        '& > img': {
+          width: {
+            xs: '100%',
+            sm: 'unset',
+          },
+        },
       }}
     >
       <img
