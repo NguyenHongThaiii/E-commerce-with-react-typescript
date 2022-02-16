@@ -43,15 +43,15 @@
 - Search (TEMPORARILY COMPLETED)
 - Assign event button clear your cart (COMPLETED )
 - Show button swiper when mobile (COMPLETED)
+- Fix size image cart empty (COMPLETED)
+- Fix width product cart page mobile size (COMPLETED)
 
 - 404 not found when redirect other page
 - Email & location in footer
 - Fix url when click shop now & back to page
 - Change header to position fixed (OPTIONAL)
 - Event icon search in product item
-- Fix width product cart page mobile size
 - Modal when clear all cart
-- Fix size image cart empty
   ////////////////////////////////////////////////////////////////
 
 - HomePage
