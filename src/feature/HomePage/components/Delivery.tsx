@@ -16,7 +16,6 @@ export default function Delivery(props: DeliveryProps) {
           variant="h5"
           sx={{
             position: 'relative',
-            margin: '0 auto',
             fontWeight: 'bold',
             textTransform: 'uppercase',
             '&::after': {
