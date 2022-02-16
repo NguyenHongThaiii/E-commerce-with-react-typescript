@@ -21,7 +21,7 @@ export default function Delivery(props: DeliveryProps) {
             '&::after': {
               content: `""`,
               height: 2,
-              width: 40,
+              width: 60,
               position: 'absolute',
               top: '50%',
               left: '-75px',
@@ -30,7 +30,7 @@ export default function Delivery(props: DeliveryProps) {
             '&::before': {
               content: `""`,
               height: 2,
-              width: 40,
+              width: 60,
               position: 'absolute',
               top: '50%',
               right: '-75px',
@@ -38,7 +38,7 @@ export default function Delivery(props: DeliveryProps) {
             },
           }}
         >
-          Delivery {'&'} returns
+          Delivery
         </Typography>
         <Typography
           sx={{
