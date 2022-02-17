@@ -1,10 +1,10 @@
-import { Box, Button, Grid, Paper, Theme, Typography } from '@mui/material'
+import { Box, Button, Grid, Modal, Paper, Theme, Typography } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
 import { clearYourCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
-import * as React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NoItemCart from '../components/No-Item-Cart'
@@ -20,7 +20,25 @@ export default function CartPage(props: ICartPageProps) {
 
   const handleClearAllCart = (): void => {
     dispatch(clearYourCart())
+    handleClose()
   }
+
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    borderRadius: 4,
+    boxShadow: 24,
+    p: 4,
+  }
+
   return (
     <Box>
       <Slide
@@ -117,7 +135,7 @@ export default function CartPage(props: ICartPageProps) {
                 >
                   <Link to="/products">Continue Shopping </Link>
                 </Button>
-                <Button color="error" variant="contained" onClick={handleClearAllCart}>
+                <Button color="error" variant="contained" onClick={handleOpen}>
                   Clear Your Cart
                 </Button>
               </Box>
@@ -131,6 +149,22 @@ export default function CartPage(props: ICartPageProps) {
           <NoItemCart />
         )}
       </Box>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">
+            Are you sure you want to delete all product? This action can not be undone.
+          </Typography>
+          <Box sx={{ mt: 2, display: 'flex', align: 'center', justifyContent: 'space-between' }}>
+            <Button variant="contained" onClick={handleClearAllCart}>
+              Remove
+            </Button>
+            <Button onClick={handleClose} color="error" variant="outlined">
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   )
 }
