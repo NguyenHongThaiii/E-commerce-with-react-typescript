@@ -24,7 +24,9 @@ export default function TableProductCart({ cartList }: TableProductCartProps) {
           <TableHead>
             <TableRow>
               <TableCell>Name Product</TableCell>
-              <TableCell align="center">Until Price</TableCell>
+              <TableCell align="center" sx={{ minWidth: '100px' }}>
+                Until Price
+              </TableCell>
               <TableCell align="center">Quantity</TableCell>
               <TableCell align="center">Subtotal</TableCell>
               <TableCell align="right">Action</TableCell>
