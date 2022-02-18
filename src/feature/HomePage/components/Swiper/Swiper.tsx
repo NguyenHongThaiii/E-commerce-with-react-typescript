@@ -23,7 +23,17 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
     navigate('/products')
   }
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box
+      sx={{
+        position: 'relative',
+        minHeight: {
+          xs: 150,
+          sm: 219,
+          md: 328,
+          lg: 429,
+        },
+      }}
+    >
       <Swiper
         navigation={true}
         onSlideChange={(swiper) => setIndex(swiper.realIndex)}
@@ -104,9 +114,14 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
           sx={{
             display: {
               xs: 'none',
-              md: 'block',
+              md: '-webkit-box',
             },
             mb: 2,
+
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitLineClamp: '2',
+            WebkitBoxOrient: 'vertical',
           }}
         >
           Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat
