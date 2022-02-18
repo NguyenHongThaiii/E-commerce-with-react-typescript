@@ -11,7 +11,20 @@ export interface InfoProductDetailProps {
 export default function InfoProductDetail({ product }: InfoProductDetailProps) {
   return (
     <Box>
-      <Typography component="h2" variant="h4" sx={{ mb: 2 }}>
+      <Typography
+        component="h2"
+        variant="h4"
+        sx={{
+          mb: 2,
+          fontWeight: {
+            xs: '500',
+          },
+          fontSize: {
+            xs: 20,
+            sm: 28,
+          },
+        }}
+      >
         {product.name}
       </Typography>
       <Typography component="h2" variant="h5" sx={{ mb: 2 }}>

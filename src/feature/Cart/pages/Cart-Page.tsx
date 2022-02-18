@@ -89,7 +89,7 @@ export default function CartPage(props: ICartPageProps) {
         </Typography>
       </Box>
 
-      <Box sx={{ maxWidth: '1280px', m: '0 auto' }}>
+      <Box sx={{ maxWidth: '1280px', m: '0 auto', px: 1.5 }}>
         {cartList?.length > 0 ? (
           <Grid container spacing={2}>
             <Grid item xs={12} lg={8}>
@@ -120,7 +120,7 @@ export default function CartPage(props: ICartPageProps) {
                   width: '100%',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  my: 2,
+                  py: 2,
                 }}
               >
                 <Button

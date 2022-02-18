@@ -31,6 +31,7 @@ export default function CurrentPosition({
         display: 'flex',
         alignItems: 'center',
         pl: 2,
+        mt: '-8px',
       }}
     >
       <Breadcrumbs aria-label="breadcrumb">
@@ -76,7 +77,25 @@ export default function CurrentPosition({
           </Typography>
         ))}
         {current && (
-          <Typography sx={{ display: 'flex', alignItems: 'center' }} color="text.primary">
+          <Typography
+            sx={{
+              maxWidth: {
+                xs: '150px',
+                sm: '100%',
+              },
+              display: {
+                xs: '-webkit-box',
+                sm: 'flex',
+              },
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              WebkitLineClamp: '1',
+              WebkitBoxOrient: 'vertical',
+              lineHeight: '12px',
+              alignItems: 'center',
+            }}
+            color="text.primary"
+          >
             <ProductionQuantityLimitsIcon sx={{ mr: 0.5 }} fontSize="inherit" />
             {current}
           </Typography>
@@ -87,7 +106,7 @@ export default function CurrentPosition({
         <LinearProgress
           sx={{
             position: 'absolute',
-            top: -7,
+            top: 0,
             right: 0,
             left: 0,
           }}

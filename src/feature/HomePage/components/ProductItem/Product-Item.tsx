@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Theme, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
@@ -90,6 +90,7 @@ export default function ProductItem({ product }: ProductItemProps) {
               <FavoriteIcon
                 sx={{
                   zIndex: 1000,
+                  color: '#e91e63',
                 }}
               />
             )}
