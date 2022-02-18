@@ -86,12 +86,14 @@ export default function DetailPage(props: DetailPageProps) {
         imageUrl="https://js-ecommerce-api.herokuapp.com/asset/img/category_slide_1.jpg"
         name={(product as Product)?.type}
       />
-      <CurrentPosition
-        current={(product as Product)?.name}
-        positionList={[{ name: 'Products', href: '/products' }]}
-        loading={loading}
-      />
       <Box ref={scrollRef}>
+        <CurrentPosition
+          current={(product as Product)?.name}
+          positionList={[{ name: 'Products', href: '/products' }]}
+          loading={loading}
+        />
+      </Box>
+      <Box>
         <Container sx={{ mt: 8 }}>
           <Paper sx={{ p: 2 }}>
             <Grid container spacing={2}>

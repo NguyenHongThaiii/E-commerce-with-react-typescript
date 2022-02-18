@@ -93,7 +93,7 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
               lg: 50,
               md: 42,
               sm: 32,
-              xs: 20,
+              xs: 16,
             },
             mb: 1,
           }}

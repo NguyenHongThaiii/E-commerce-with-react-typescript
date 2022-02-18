@@ -66,7 +66,7 @@ export default function OurCategory(props: OurCategoryProps) {
         <Grid container spacing={2}>
           {state.length > 0 ? (
             state.map((category, index) => (
-              <Grid key={category.id} item xs={12} sm={6} md={4} lg={2}>
+              <Grid key={category.id} item xs={6} md={4} lg={2}>
                 <CategoryItem category={category} />
               </Grid>
             ))

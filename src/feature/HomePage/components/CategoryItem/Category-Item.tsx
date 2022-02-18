@@ -20,7 +20,7 @@ export default function CategoryItem({ category }: CategoryItemProps) {
         borderRadius: 4,
         overflow: 'hidden',
         minHeight: {
-          xs: '445px',
+          xs: '236.8px',
           md: '375px',
           lg: '244px',
         },
@@ -55,7 +55,7 @@ export default function CategoryItem({ category }: CategoryItemProps) {
               color: '#fff',
               letterSpacing: 3,
               fontSize: {
-                xs: 48,
+                xs: 28,
                 sm: 40,
                 md: 32,
               },

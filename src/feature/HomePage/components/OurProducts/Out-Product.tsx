@@ -70,7 +70,7 @@ export default function OurProduct(props: OurProductProps) {
         <Grid container spacing={2}>
           {state.length > 0 ? (
             state.map((product) => (
-              <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
+              <Grid key={product.id} item xs={6} md={4} lg={3}>
                 <ProductItem product={product} />
               </Grid>
             ))

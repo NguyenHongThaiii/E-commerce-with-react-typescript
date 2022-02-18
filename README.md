@@ -31,14 +31,15 @@
 - Fix size image cart empty (COMPLETED)
 - Fix width product cart page mobile size (COMPLETED)
 - Modal when clear all cart (COMPLETED)
+- Auto slide to head when click category to product page (COMPLETED)
+- Show two items & categories when UI mobile (COMPLETED)
 
   ////////////////////////////////////////////////////////////////
 
   FIX UI WHEN DEPLOYED
 
 - Static image
-- Auto slide to head when click category to product page (TEMPORARILY COMPLETED)
-- Scroll to old destination when prev or next url (Processing )
+- Scroll to old destination when prev or next url (Processing)
 - Await when changes quantity product & UI
 
 - 404 not found when redirect other page

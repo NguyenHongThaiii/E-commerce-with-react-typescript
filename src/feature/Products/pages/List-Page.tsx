@@ -105,10 +105,11 @@ export default function ListPage(props: ListPageProps) {
         }
         name={categoryList[indexCategory] ? categoryList[indexCategory].name : 'All'}
       />
+      <Box ref={scrollRef}>
+        <CurrentPosition current="Products" loading={loading} />
+      </Box>
 
-      <CurrentPosition current="Products" loading={loading} />
-
-      <Box sx={{ textAlign: 'center' }} ref={scrollRef}>
+      <Box sx={{ textAlign: 'center' }}>
         <Typography
           component="span"
           variant="h5"
@@ -163,7 +164,7 @@ export default function ListPage(props: ListPageProps) {
         <Grid container spacing={2}>
           {productList ? (
             productList?.map((product) => (
-              <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
+              <Grid key={product.id} item xs={6} md={4} lg={3}>
                 <ProductItem product={product} />
               </Grid>
             ))

@@ -41,7 +41,7 @@ export default function ProductItem({ product }: ProductItemProps) {
         <Box
           sx={{
             minHeight: {
-              xs: '350px',
+              xs: '173px',
               md: '275px',
             },
 
