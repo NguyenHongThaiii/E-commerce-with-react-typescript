@@ -39,6 +39,7 @@ function App() {
 
       try {
         const resultAction = await dispatch(getMe({ ...user.providerData[0], cartList }))
+        console.log('user', user)
         const currentUser = unwrapResult<any>(resultAction)
         // const token = await user.getIdToken()
       } catch (error) {
