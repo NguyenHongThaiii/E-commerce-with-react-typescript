@@ -101,7 +101,7 @@ export default function ListPage(props: ListPageProps) {
         imageUrl={
           categoryList[indexCategory]
             ? categoryList[indexCategory].slide
-            : 'https://js-ecommerce-api.herokuapp.com/asset/img/category_slide_1.jpg'
+            : `${import.meta.env.VITE_TS_PATH}/asset/img/category_slide_1.jpg`
         }
         name={categoryList[indexCategory] ? categoryList[indexCategory].name : 'All'}
       />

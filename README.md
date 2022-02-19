@@ -67,3 +67,15 @@
 - Detail Product Page
 - Cart Page
 - Login Page
+
+---
+
+Year 2022
+
+- Typescript
+- NodeJs + NestJs
+- Completed e-commerce project
+- Revise HTML/CSS
+- Project with SCCS + BEM
+- Revise HTML/CSS + JS + REACT
+- NextJs + Typescript advance

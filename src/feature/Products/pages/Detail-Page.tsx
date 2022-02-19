@@ -105,7 +105,7 @@ export default function DetailPage(props: DetailPageProps) {
   return (
     <Box>
       <Slide
-        imageUrl="https://js-ecommerce-api.herokuapp.com/asset/img/category_slide_1.jpg"
+        imageUrl={`${import.meta.env.VITE_TS_PATH}/asset/img/category_slide_1.jpg`}
         name={(product as Product)?.type}
       />
       <Box ref={scrollRef}>

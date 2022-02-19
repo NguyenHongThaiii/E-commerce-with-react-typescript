@@ -10,9 +10,9 @@ export interface SwiperFeatureProps {}
 
 export default function SwiperFeature(props: SwiperFeatureProps) {
   const newSliders = [
-    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_1.jpg',
-    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_2_1.jpg',
-    'https://js-ecommerce-api.herokuapp.com/asset/img/Slider_3.jpg',
+    `${import.meta.env.VITE_TS_PATH}/asset/img/Slider_1.jpg`,
+    `${import.meta.env.VITE_TS_PATH}/asset/img/Slider_2_1.jpg`,
+    `${import.meta.env.VITE_TS_PATH}/asset/img/Slider_3.jpg`,
   ]
 
   const navigate = useNavigate()
