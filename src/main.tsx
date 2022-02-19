@@ -1,11 +1,13 @@
+import { CssBaseline } from '@mui/material'
+import { store } from 'app/store'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
-import { CssBaseline } from '@mui/material'
-import App from './App'
-import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { store } from 'app/store'
+import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import App from './App'
+import './index.css'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,6 +16,17 @@ ReactDOM.render(
         <CssBaseline>
           <App />
         </CssBaseline>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

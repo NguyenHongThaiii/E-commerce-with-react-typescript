@@ -12,7 +12,7 @@ export default function NotFound(props: NotFoundProps) {
         alignItems: 'center',
         flexDirection: 'column',
         m: '24px auto',
-        maxWidth: 1280,
+        maxWidth: 1000,
       }}
     >
       <img

@@ -21,8 +21,9 @@ export default function ProductItem({ product }: ProductItemProps) {
     }, 500)
   }
 
-  const preventBubbleClick = (e: MouseEvent): void => {
+  const handleToTypeProduct = (e: MouseEvent): void => {
     e.stopPropagation()
+    navigate(`/products?type=${product.type}`)
   }
 
   const handleClickHeart = (e: MouseEvent): void => {
@@ -75,7 +76,7 @@ export default function ProductItem({ product }: ProductItemProps) {
             },
           }}
         >
-          <IconButton onClick={preventBubbleClick}>
+          <IconButton onClick={handleToTypeProduct}>
             <SearchIcon />
           </IconButton>
 

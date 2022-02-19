@@ -33,6 +33,9 @@
 - Modal when clear all cart (COMPLETED)
 - Auto slide to head when click category to product page (COMPLETED)
 - Show two items & categories when UI mobile (COMPLETED)
+- 404 not found when redirect other page (COMPLETED)
+- Event icon search in product item (COMPLETED)
+- Fix url when click to product page & back to page previous (COMPLETED)
 
   ////////////////////////////////////////////////////////////////
 
@@ -40,14 +43,11 @@
 
 - Static image
 - Scroll to old destination when prev or next url (Processing)
-- Await when changes quantity product & UI
 
-- 404 not found when redirect other page
-- Email & location in footer
-- Fix url when click shop now & back to page
+- Email & location in footer (TEMPORARY COMPLETED)
+- Notification for add item for favorite list, add to cart, payment, login, (Add to cart)
 - Change header to position fixed (OPTIONAL)
-- Event icon search in product item
-
+- Await when changes quantity product & UI (OPTIONAL)
   ////////////////////////////////////////////////////////////////
 
 * Page login (PROCESSING)

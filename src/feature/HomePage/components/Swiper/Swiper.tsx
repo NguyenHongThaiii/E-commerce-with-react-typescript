@@ -20,7 +20,7 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
   SwiperCore.use([Autoplay, Navigation])
 
   const handleOnClick = () => {
-    navigate('/products')
+    navigate('/products?_limit=12&_page=1')
   }
   return (
     <Box

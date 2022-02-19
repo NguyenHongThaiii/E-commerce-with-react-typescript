@@ -65,10 +65,10 @@ export default function ListPage(props: ListPageProps) {
       try {
         const { data }: ListResponse<Category> = await categoriesApi.getAll()
         setCategoryList(data)
-        navigate({
-          pathname: location.pathname,
-          search: queryString.stringify({ ...filters }),
-        })
+        // navigate({
+        //   pathname: location.pathname,
+        //   search: queryString.stringify({ ...filters }),
+        // })
       } catch (error) {
         console.log('Fail to fetch category list', error)
       }

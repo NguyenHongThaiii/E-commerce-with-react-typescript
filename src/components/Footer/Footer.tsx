@@ -12,12 +12,14 @@ import React from 'react'
 export interface FooterProps {}
 
 export default function Footer(props: FooterProps) {
-  const TextComponent = styled('p')(({ theme }) => ({
+  const TextComponent = styled('a')(({ theme }) => ({
     display: 'flex',
     alignItems: 'flex-start',
     fontSize: '16px',
     color: 'rgb(142,142,142)',
     fontWeight: 300,
+    margin: ' 16px 0 ',
+    textDecoration: 'none',
     '& > svg': {
       marginRight: theme.spacing(1),
     },
@@ -81,12 +83,12 @@ export default function Footer(props: FooterProps) {
                 district Tan Bien, province Tay Ninh
               </TextComponent>
 
-              <TextComponent>
+              <TextComponent href="mailto:tranvotam123@gmail.com">
                 <EmailOutlinedIcon />
                 tranvotam123@gmail.com
               </TextComponent>
 
-              <TextComponent>
+              <TextComponent href="tel:0971151472">
                 <LocalPhoneOutlinedIcon />
                 +84 971151472
               </TextComponent>
@@ -193,7 +195,6 @@ export default function Footer(props: FooterProps) {
           </Grid>
         </Container>
       </Box>
-
       <Typography
         sx={{
           textAlign: 'center',

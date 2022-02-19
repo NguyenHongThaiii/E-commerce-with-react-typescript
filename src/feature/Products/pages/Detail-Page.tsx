@@ -14,6 +14,7 @@ import PreviewImageDetail from '../components/Preview-Image-Detail'
 import ProductDetailForm from '../components/Product-Detail-Form'
 import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export interface DetailPageProps {}
 
@@ -28,6 +29,24 @@ const style = {
   borderRadius: 4,
   p: 4,
 }
+
+const ToastifyUI = () => (
+  <Box
+    sx={{
+      color: '#333',
+      '& > a': {
+        textDecoration: 'none',
+        color: (theme: Theme) => theme.palette.primary.light,
+        fontSize: 16,
+        py: 2,
+      },
+    }}
+  >
+    <Typography sx={{}}>🦄 You have placed your order successfully.</Typography>
+
+    <Link to="carts">Click here to view!</Link>
+  </Box>
+)
 
 export default function DetailPage(props: DetailPageProps) {
   const { productId } = useParams()
@@ -76,10 +95,13 @@ export default function DetailPage(props: DetailPageProps) {
       }
       const actions = addToCart(data)
       await dispatch(actions)
+      toast(<ToastifyUI />)
     })
     return () => unregisterAuthObserver()
   }
+
   if (notFound) return <NotFound />
+
   return (
     <Box>
       <Slide
