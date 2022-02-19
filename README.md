@@ -45,7 +45,7 @@
 - Scroll to old destination when prev or next url (Processing)
 
 - Email & location in footer (TEMPORARY COMPLETED)
-- Notification for add item for favorite list, add to cart, payment, login, (Add to cart)
+- Notification for add item for favorite list, add to cart, payment (Add to cart completed)
 - Change header to position fixed (OPTIONAL)
 - Await when changes quantity product & UI (OPTIONAL)
   ////////////////////////////////////////////////////////////////
@@ -54,7 +54,11 @@
 * Radio delivery payment (OPTIONAL)
 * Profile page (ADVANCE)
 * Payment with stripe (ADVANCE)
-* Page favorite products (heart)
+
+- Page favorite products (heart)
+
+* POST METHOD BE
+* Fix event click heart icon
 
   ////////////////////////////////////////////////////////////////
 

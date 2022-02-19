@@ -11,7 +11,6 @@ export interface LoginPageProps {}
 export default function LoginPage(props: LoginPageProps) {
   // Configure FirebaseUI.
   const user = useSelector((state: RootState) => state.auth.user)
-  console.log('user', user)
   if (user.email) {
     return <Navigate to="/" />
   }
@@ -21,10 +20,7 @@ export default function LoginPage(props: LoginPageProps) {
     signInFlow: 'popup',
     signInSuccessUrl: '/',
     // We will display Google and Facebook as auth providers.
-    signInOptions: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    ],
+    signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   }
 
   return (
