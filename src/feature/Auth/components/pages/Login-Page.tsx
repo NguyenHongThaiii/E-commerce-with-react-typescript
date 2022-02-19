@@ -11,6 +11,7 @@ export interface LoginPageProps {}
 export default function LoginPage(props: LoginPageProps) {
   // Configure FirebaseUI.
   const user = useSelector((state: RootState) => state.auth.user)
+  console.log('user', user)
   if (user.email) {
     return <Navigate to="/" />
   }
