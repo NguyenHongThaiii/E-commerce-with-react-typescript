@@ -130,12 +130,26 @@ export default function CartPage(props: ICartPageProps) {
                     '&>a': {
                       textDecoration: 'none',
                       color: '#fff',
+                      fontSize: {
+                        xs: 10,
+                        sm: 14,
+                      },
                     },
                   }}
                 >
                   <Link to="/products">Continue Shopping </Link>
                 </Button>
-                <Button color="error" variant="contained" onClick={handleOpen}>
+                <Button
+                  color="error"
+                  variant="contained"
+                  onClick={handleOpen}
+                  sx={{
+                    fontSize: {
+                      xs: 10,
+                      sm: 14,
+                    },
+                  }}
+                >
                   Clear Your Cart
                 </Button>
               </Box>
