@@ -134,7 +134,7 @@ export default function InfoProductCartMobile({ cart }: InfoProductCartMobilePro
       </Grid>
 
       <IconButton
-        sx={{ position: 'absolute', top: '5px', right: '5px', p: 0 }}
+        sx={{ position: 'absolute', top: '-5px', right: '-5px', p: 0 }}
         onClick={handleOpen}
       >
         <HighlightOffTwoToneIcon />

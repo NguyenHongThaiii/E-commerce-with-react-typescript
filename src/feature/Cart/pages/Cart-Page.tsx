@@ -131,7 +131,7 @@ export default function CartPage(props: ICartPageProps) {
                       textDecoration: 'none',
                       color: '#fff',
                       fontSize: {
-                        xs: 10,
+                        xs: 12,
                         sm: 14,
                       },
                     },
@@ -145,7 +145,7 @@ export default function CartPage(props: ICartPageProps) {
                   onClick={handleOpen}
                   sx={{
                     fontSize: {
-                      xs: 10,
+                      xs: 12,
                       sm: 14,
                     },
                   }}
