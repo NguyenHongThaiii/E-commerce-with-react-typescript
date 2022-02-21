@@ -41,9 +41,12 @@ export default function ProductItem({ product }: ProductItemProps) {
       <Box sx={{ position: 'relative', zIndex: 100 }} onClick={handleToDetailPage}>
         <Box
           sx={{
-            minHeight: {
-              xs: '173px',
-              md: '275px',
+            lineHeight: 0,
+            '& > img': {
+              minHeight: {
+                xs: '172px',
+                md: '275px',
+              },
             },
 
             overflow: 'hidden',
@@ -98,7 +101,13 @@ export default function ProductItem({ product }: ProductItemProps) {
           </IconButton>
         </Box>
       </Box>
-      <Box sx={{ backgroundColor: '#fff', mt: '-6px', textAlign: 'center' }}>
+
+      <Box
+        sx={{
+          backgroundColor: '#fff',
+          textAlign: 'center',
+        }}
+      >
         <Typography
           sx={{
             fontWeight: 'bold',

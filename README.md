@@ -76,6 +76,6 @@ Year 2022
 - NodeJs + NestJs
 - Completed e-commerce project
 - Revise HTML/CSS
-- Project with SCCS + BEM
+- Project with SCCS + BEM + ReactJs
 - Revise HTML/CSS + JS + REACT
 - NextJs + Typescript advance
