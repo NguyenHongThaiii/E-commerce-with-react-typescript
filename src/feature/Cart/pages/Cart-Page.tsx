@@ -32,7 +32,7 @@ export default function CartPage(props: ICartPageProps) {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 350,
     bgcolor: 'background.paper',
     borderRadius: 4,
     boxShadow: 24,
