@@ -1,12 +1,13 @@
-import { Box, Button, Grid, Modal, Paper, Theme, Typography } from '@mui/material'
+import { Box, Button, Grid, Modal, Paper, Typography } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
 import { clearYourCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
+import firebase from 'firebase/compat/app'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
 import ProductCartMobile from '../components/ProductCartMobile/Product-Cart-Mobile'
@@ -15,6 +16,11 @@ import TableProductCart from '../components/Table-Product-Cart'
 export interface ICartPageProps {}
 
 export default function CartPage(props: ICartPageProps) {
+  const currentUser = firebase.auth().currentUser
+  if (!currentUser) {
+    return <Navigate to="/" />
+  }
+
   const cartList = useSelector((state: RootState) => state.auth.user.cartList)
   const dispatch: Dispatch = useDispatch()
 
