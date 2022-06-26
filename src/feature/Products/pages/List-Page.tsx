@@ -160,6 +160,7 @@ export default function ListPage(props: ListPageProps) {
         <Box sx={{ my: 2 }}>
           <ProductListFilter categoryList={categoryList} onChange={handleOnChange} />
         </Box>
+
         {/* Listing */}
         <Grid container spacing={2}>
           {productList ? (
@@ -171,7 +172,33 @@ export default function ListPage(props: ListPageProps) {
           ) : (
             <ProductSkeleton length={12} />
           )}
-          {productList?.length === 0 && <NotFound />}
+          {productList?.length === 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                width: '100%',
+              }}
+            >
+              <Box
+                sx={{
+                  width: '134px',
+                  height: '134px',
+                  '&>img': { width: '100%', height: '100%', objectFit: 'cover' },
+                }}
+              >
+                <img src="/find_no_item.png" alt="find_no_item" />
+              </Box>
+              <Box sx={{ color: 'rgba(0,0,0,.87)', fontSize: '18px', textAlign: 'center' }}>
+                <Typography sx={{ mt: '15px', mb: '10px' }}>Không tìm thấy kết quả nào</Typography>
+                <Typography sx={{ color: 'rgba(0,0,0,.54)' }}>
+                  Hãy thử sử dụng các từ khóa chung chung hơn
+                </Typography>
+              </Box>
+            </Box>
+          )}
         </Grid>
 
         {/* pagination */}

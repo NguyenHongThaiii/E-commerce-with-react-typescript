@@ -16,8 +16,10 @@ import TableProductCart from '../components/Table-Product-Cart'
 export interface ICartPageProps {}
 
 export default function CartPage(props: ICartPageProps) {
+  const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
-  if (!currentUser) {
+
+  if (!currentUser || !user.uid) {
     return <Navigate to="/" />
   }
 
@@ -133,9 +135,12 @@ export default function CartPage(props: ICartPageProps) {
                   color="primary"
                   variant="contained"
                   sx={{
+                    p: 0,
                     '&>a': {
                       textDecoration: 'none',
                       color: '#fff',
+                      py: '6px',
+                      px: '16px',
                       fontSize: {
                         xs: 12,
                         sm: 14,

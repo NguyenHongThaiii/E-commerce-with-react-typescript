@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { RootState } from 'app/store'
 import firebase from 'firebase/compat/app'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyledFirebaseAuth } from 'react-firebaseui'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
@@ -10,8 +10,10 @@ export interface LoginPageProps {}
 
 export default function LoginPage(props: LoginPageProps) {
   // Configure FirebaseUI.
+  const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
-  if (currentUser) {
+
+  if (currentUser || user.uid) {
     return <Navigate to="/" />
   }
 
@@ -22,6 +24,7 @@ export default function LoginPage(props: LoginPageProps) {
     // We will display Google and Facebook as auth providers.
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   }
+  console.log(currentUser)
 
   return (
     <Box
