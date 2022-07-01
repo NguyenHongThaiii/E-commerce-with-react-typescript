@@ -125,7 +125,6 @@ export default function Header(props: HeaderProps) {
     })()
   }, [userState])
 
-  console.log(len)
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
