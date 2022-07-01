@@ -5,12 +5,14 @@ import { clearYourCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
+import { CartProvider } from 'context/cart-context'
 import firebase from 'firebase/compat/app'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { Cart } from 'models'
-import React, { useEffect, useState } from 'react'
+import { Cart, CartUser } from 'models'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
+import { getCartListOfAccounts, handleRemoveCartItem, setCartListOfAccounts } from 'utils'
 import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
 import ProductCartMobile from '../components/ProductCartMobile/Product-Cart-Mobile'
@@ -21,8 +23,7 @@ export interface ICartPageProps {}
 export default function CartPage(props: ICartPageProps) {
   const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
-  const colRef = collection(db, 'e-commerce')
-  const q = query(colRef, where('userID', '==', `${user.uid}`))
+  const checkRef = useRef<boolean>(false)
   const [state, setState] = useState<Cart[]>([])
   if (!currentUser && !user.uid) {
     return <Navigate to="/" />
@@ -33,22 +34,59 @@ export default function CartPage(props: ICartPageProps) {
 
   useEffect(() => {
     ;(async () => {
-      const res = await getDocs(q)
-      const temp: Cart[] = []
-      res.docs.map((doc) => {
-        temp.push(doc.data() as Cart)
-      })
-      setState([...temp])
+      if (checkRef.current) {
+        const colRef = collection(db, 'e-commerce')
+        const q = query(colRef, where('userID', '==', `${user.uid}`))
+        const res = await getDocs(q)
+        const temp: Cart[] = []
+        res.docs.map((doc) => {
+          temp.push(doc.data() as Cart)
+        })
+        const listUserForCartList = getCartListOfAccounts()
+        const indexUser = listUserForCartList.findIndex((item: CartUser) => item.uid === user.uid)
+        if (indexUser >= 0 && user.uid) {
+          const result = [...listUserForCartList]
+          result[indexUser].cartList = [...temp]
+          setCartListOfAccounts(result)
+        }
+        if (indexUser < 0 && user.uid) {
+          const newUser: CartUser = {
+            uid: user.uid,
+            cartList: [...temp],
+          }
+          const result = [...listUserForCartList]
+          result.push(newUser)
+          setCartListOfAccounts(result)
+        }
+
+        setState([...temp])
+      }
     })()
+    return () => {
+      checkRef.current = false
+    }
   }, [])
-  const handleClearAllCart = (): void => {
+
+  const handleClearAllCart = async (): Promise<any> => {
+    const colRef = collection(db, 'e-commerce')
+    const q = query(colRef, where('userID', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.docs.forEach(async (doc) => {
+      await handleRemoveCartItem(doc.data().id, user.uid, 'e-commerce')
+    })
     dispatch(clearYourCart())
     handleClose()
+    setState([])
   }
-
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const handleOnClickRemove = (id: string | unknown) => {
+    const newState = state.filter((item: Cart) => item.id !== id)
+    console.log(newState)
+    setState(newState)
+  }
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -113,7 +151,7 @@ export default function CartPage(props: ICartPageProps) {
       </Box>
 
       <Box sx={{ maxWidth: '1280px', m: '0 auto', px: 1.5 }}>
-        {cartList?.length > 0 ? (
+        {state?.length > 0 || cartList.length > 0 ? (
           <Grid container spacing={2}>
             <Grid item xs={12} lg={8}>
               <Box
@@ -124,7 +162,10 @@ export default function CartPage(props: ICartPageProps) {
                   },
                 }}
               >
-                <TableProductCart cartList={cartList || state} />
+                <TableProductCart
+                  cartList={cartList.length > 0 ? cartList : state}
+                  onClick={(id) => handleOnClickRemove(id)}
+                />
               </Box>
               <Box
                 sx={{
@@ -135,7 +176,10 @@ export default function CartPage(props: ICartPageProps) {
                 }}
                 component={Paper}
               >
-                <ProductCartMobile cartList={cartList || state} />
+                <ProductCartMobile
+                  cartList={cartList.length > 0 ? cartList : state}
+                  onClick={(id) => handleOnClickRemove(id)}
+                />
               </Box>
               <Box
                 sx={{

@@ -14,9 +14,10 @@ import InfoProductCart from './Info-Product-Cart'
 
 export interface TableProductCartProps {
   cartList: Cart[]
+  onClick: (id: string | unknown) => void
 }
 
-export default function TableProductCart({ cartList }: TableProductCartProps) {
+export default function TableProductCart({ cartList, onClick }: TableProductCartProps) {
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -34,7 +35,7 @@ export default function TableProductCart({ cartList }: TableProductCartProps) {
           </TableHead>
           <TableBody>
             {cartList?.map((cart: Cart) => (
-              <InfoProductCart cart={cart} key={cart.id} />
+              <InfoProductCart cart={cart} key={cart.id} onClick={onClick} />
             ))}
           </TableBody>
         </Table>

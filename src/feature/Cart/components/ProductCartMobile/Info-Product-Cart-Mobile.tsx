@@ -14,9 +14,10 @@ import { RootState } from 'app/store'
 
 export interface InfoProductCartMobileProps {
   cart: Cart
+  onClick: (id: string | unknown) => void
 }
 
-export default function InfoProductCartMobile({ cart }: InfoProductCartMobileProps) {
+export default function InfoProductCartMobile({ cart, onClick }: InfoProductCartMobileProps) {
   const totalPrice = useSelector(totalProductListCost)
   const currUser = useSelector((state: RootState) => state.auth.user)
 
@@ -50,7 +51,7 @@ export default function InfoProductCartMobile({ cart }: InfoProductCartMobilePro
 
   const handleOnRemove = async (id: string | unknown) => {
     await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
-
+    onClick(id)
     dispatch(removeFromCart(id))
     setOpen(false)
   }

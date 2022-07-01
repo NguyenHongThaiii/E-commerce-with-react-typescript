@@ -13,7 +13,7 @@ export default function LoginPage(props: LoginPageProps) {
   const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
 
-  if (currentUser || user.uid) {
+  if (currentUser && user.uid) {
     return <Navigate to="/" />
   }
 

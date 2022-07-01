@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import userApi from 'api/userApi'
+import { db } from 'App'
 import firebase from 'firebase/compat/app'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { Cart, CartUser, FirebaseResponse } from 'models'
 import { getAccount, getCartListOfAccounts, setAccount, setCartListOfAccounts } from 'utils'
 
@@ -13,6 +15,7 @@ export interface AuthState {
 export const getMe = createAsyncThunk('auth/fetchAuth', async (payload: FirebaseResponse) => {
   try {
     const userFireBase = await userApi.getMe(payload)
+
     return userFireBase
   } catch (error) {
     console.log('Error', error)

@@ -24,15 +24,15 @@ import { format, handleGetItemFromFB, handleRemoveCartItem, handleSetQuantityFB 
 
 export interface InfoProductCartProps {
   cart: Cart
+  onClick: (values: string | unknown) => void
 }
 
-export default function InfoProductCart({ cart }: InfoProductCartProps) {
+export default function InfoProductCart({ cart, onClick }: InfoProductCartProps) {
   const currUser = useSelector((state: RootState) => state.auth.user)
   const [isTrigger, setIsTrigger] = useState<boolean>(false)
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-
   const dispatch: Dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -57,6 +57,7 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
   }
 
   const handleOnRemove = async (id: string | unknown) => {
+    onClick(id)
     await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
     dispatch(removeFromCart(id))
     setOpen(false)
