@@ -57,8 +57,8 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
   }
 
   const handleOnRemove = async (id: string | unknown) => {
-    onClick(id)
     await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
+    onClick(id)
     dispatch(removeFromCart(id))
     setOpen(false)
   }

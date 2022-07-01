@@ -34,39 +34,34 @@ export default function CartPage(props: ICartPageProps) {
 
   useEffect(() => {
     ;(async () => {
-      if (checkRef.current) {
-        const colRef = collection(db, 'e-commerce')
-        const q = query(colRef, where('userID', '==', `${user.uid}`))
-        const res = await getDocs(q)
-        const temp: Cart[] = []
-        res.docs.map((doc) => {
-          temp.push(doc.data() as Cart)
-        })
-        const listUserForCartList = getCartListOfAccounts()
-        const indexUser = listUserForCartList.findIndex((item: CartUser) => item.uid === user.uid)
-        if (indexUser >= 0 && user.uid) {
-          const result = [...listUserForCartList]
-          result[indexUser].cartList = [...temp]
-          setCartListOfAccounts(result)
-        }
-        if (indexUser < 0 && user.uid) {
-          const newUser: CartUser = {
-            uid: user.uid,
-            cartList: [...temp],
-          }
-          const result = [...listUserForCartList]
-          result.push(newUser)
-          setCartListOfAccounts(result)
-        }
-
-        setState([...temp])
+      const colRef = collection(db, 'e-commerce')
+      const q = query(colRef, where('userID', '==', `${user.uid}`))
+      const res = await getDocs(q)
+      const temp: Cart[] = []
+      res.docs.map((doc) => {
+        temp.push(doc.data() as Cart)
+      })
+      const listUserForCartList = getCartListOfAccounts()
+      const indexUser = listUserForCartList.findIndex((item: CartUser) => item.uid === user.uid)
+      if (indexUser >= 0 && user.uid) {
+        const result = [...listUserForCartList]
+        result[indexUser].cartList = [...temp]
+        setCartListOfAccounts(result)
       }
-    })()
-    return () => {
-      checkRef.current = false
-    }
-  }, [])
+      if (indexUser < 0 && user.uid) {
+        const newUser: CartUser = {
+          uid: user.uid,
+          cartList: [...temp],
+        }
+        const result = [...listUserForCartList]
+        result.push(newUser)
+        setCartListOfAccounts(result)
+      }
 
+      setState([...temp])
+    })()
+    return () => {}
+  }, [])
   const handleClearAllCart = async (): Promise<any> => {
     const colRef = collection(db, 'e-commerce')
     const q = query(colRef, where('userID', '==', user.uid))
@@ -163,7 +158,7 @@ export default function CartPage(props: ICartPageProps) {
                 }}
               >
                 <TableProductCart
-                  cartList={cartList.length > 0 ? cartList : state}
+                  cartList={state.length > 0 ? state : cartList}
                   onClick={(id) => handleOnClickRemove(id)}
                 />
               </Box>
@@ -177,7 +172,7 @@ export default function CartPage(props: ICartPageProps) {
                 component={Paper}
               >
                 <ProductCartMobile
-                  cartList={cartList.length > 0 ? cartList : state}
+                  cartList={state.length > 0 ? state : cartList}
                   onClick={(id) => handleOnClickRemove(id)}
                 />
               </Box>
