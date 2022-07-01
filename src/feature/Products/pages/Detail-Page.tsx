@@ -7,7 +7,7 @@ import { InfoDetailSkeleton } from 'components/SkeletonsField/Info-Detail-Skelet
 import Slide from 'components/Slide/Slide'
 import { Cart, Product, QuantityState } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import InfoProductDetail from '../components/Info-Product-Detail'
 import PreviewImageDetail from '../components/Preview-Image-Detail'
@@ -15,6 +15,21 @@ import ProductDetailForm from '../components/Product-Detail-Form'
 import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
+import { db } from 'App'
+import { RootState } from 'app/store'
+import { handleGetItemFromFB, handleSetQuantityFB } from 'utils'
 
 export interface DetailPageProps {}
 
@@ -49,13 +64,13 @@ const ToastifyUI = () => (
 )
 
 export default function DetailPage(props: DetailPageProps) {
+  const currUser = useSelector((state: RootState) => state.auth.user)
   const { productId } = useParams()
   const dispatch = useDispatch()
   const [product, setProduct] = useState<Product>()
   const [loading, setLoading] = useState<boolean>(false)
   const [notFound, setNotFound] = useState<boolean>(false)
   const scrollRef = useRef<HTMLDivElement>(null)
-
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -92,9 +107,32 @@ export default function DetailPage(props: DetailPageProps) {
         quantity,
         id: (product as Product).id,
         product: product as Product,
+        userID: currUser?.uid,
       }
       const actions = addToCart(data)
+      const colRef = collection(db, 'e-commerce')
+
+      const querySnapshot = await handleGetItemFromFB(
+        (product as Product).id,
+        currUser.uid,
+        'e-commerce'
+      )
+      if (querySnapshot.docs.length <= 0) {
+        addDoc(colRef, data)
+      } else {
+        handleSetQuantityFB(
+          (product as Product).id,
+          currUser.uid,
+          'e-commerce',
+          querySnapshot.docs[0].data().quantity + quantity
+        )
+        // const colRefUpdate = doc(db, 'e-commerce', querySnapshot.docs[0].id)
+        // await updateDoc(colRefUpdate, {
+        //   quantity: querySnapshot.docs[0].data().quantity + quantity,
+        // })
+      }
       await dispatch(actions)
+
       toast(<ToastifyUI />)
     })
     return () => unregisterAuthObserver()
@@ -128,7 +166,11 @@ export default function DetailPage(props: DetailPageProps) {
                 ) : (
                   <>
                     <InfoProductDetail product={product || ({} as Product)} />
-                    <ProductDetailForm onSubmit={handleOnSubmit} initialValues={initialValues} />
+                    <ProductDetailForm
+                      onSubmit={handleOnSubmit}
+                      initialValues={initialValues}
+                      product={product || ({} as Product)}
+                    />
                   </>
                 )}
               </Grid>

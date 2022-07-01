@@ -11,18 +11,22 @@ export interface AuthState {
 }
 
 export const getMe = createAsyncThunk('auth/fetchAuth', async (payload: FirebaseResponse) => {
-  const userFireBase = await userApi.getMe(payload)
-  return userFireBase
+  try {
+    const userFireBase = await userApi.getMe(payload)
+    return userFireBase
+  } catch (error) {
+    console.log('Error', error)
+  }
 })
 
 const initialState: AuthState = {
   loading: false,
   error: '',
   user: {
-    displayName: '',
-    email: '',
-    photoURL: '',
-    uid: '',
+    displayName: getAccount()?.displayName?.length === 0 ? '' : getAccount()?.displayName,
+    email: getAccount()?.email?.length === 0 ? '' : getAccount()?.email,
+    photoURL: getAccount()?.photoURL?.length === 0 ? '' : getAccount()?.photoURL,
+    uid: getAccount()?.uid?.length === 0 ? '' : getAccount()?.uid,
     cartList: getAccount()?.cartList?.length === 0 ? [] : getAccount()?.cartList,
   },
 }
@@ -48,7 +52,6 @@ const authSlice = createSlice({
       const isUser = !!JSON.parse(localStorage.getItem('firebaseui::rememberedAccounts') as string)
         ?.email
       if (!isUser) {
-        alert('Please login to Firebase')
         return
       }
       const { id } = action.payload
@@ -137,11 +140,11 @@ const authSlice = createSlice({
         setCartListOfAccounts([])
       }
       state.loading = false
-      state.user = action.payload
+      state.user = action.payload as FirebaseResponse
       const listUserForCartList = getCartListOfAccounts()
 
       const indexUser = listUserForCartList.findIndex(
-        (user: CartUser) => user.uid === action.payload.uid
+        (user: CartUser) => user.uid === (action.payload as FirebaseResponse).uid
       )
       if (indexUser >= 0) state.user.cartList = listUserForCartList[indexUser].cartList
 

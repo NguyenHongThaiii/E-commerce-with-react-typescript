@@ -11,10 +11,21 @@ import HomePage from 'feature/HomePage/Home-Page'
 import ListingFeature from 'feature/Products'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
+import { getFirestore } from 'firebase/firestore'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
+
+const config = {
+  apiKey: import.meta.env.VITE_APP_FIREBASE_API,
+  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: 'authentication-ecommerce-bec4b',
+  storageBucket: 'authentication-ecommerce-bec4b.appshot.com',
+  // ...
+}
+const app = firebase.initializeApp(config)
+export const db = getFirestore(app)
 
 function App() {
   const dispatch = useDispatch()
@@ -22,23 +33,19 @@ function App() {
   const cartList = useSelector((state: RootState) => state.auth.user.cartList) || []
 
   // Configure Firebase.
-  const config = {
-    apiKey: import.meta.env.VITE_APP_FIREBASE_API,
-    authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
-    // ...
-  }
-  firebase.initializeApp(config)
 
   // Handle firebase auth changed
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: any) => {
+    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: any | null) => {
       if (!user) {
-        console.log('user is not login')
+        // console.log('user is not login')
         return
       }
 
       try {
-        const resultAction = await dispatch(getMe({ ...user.providerData[0], cartList }))
+        const resultAction = await dispatch(
+          getMe({ ...user.providerData[0], cartList, uid: user.uid })
+        )
         const currentUser = unwrapResult<any>(resultAction)
         // const token = await user.getIdToken()
       } catch (error) {
@@ -47,6 +54,7 @@ function App() {
     })
     return () => unregisterAuthObserver() // Make sure we un-register Firebase observers when the component unmounts.
   }, [])
+
   return (
     <div className="App">
       <Header />

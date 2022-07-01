@@ -1,7 +1,7 @@
 export interface Product {
   id: string
   name: string
-  imageUrl: any
+  imageUrl: string
   description: string
   status: boolean
   trending: boolean

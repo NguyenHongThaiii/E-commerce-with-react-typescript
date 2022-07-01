@@ -1,11 +1,14 @@
 import { Box, Button, Grid, Modal, Paper, Typography } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
+import { db } from 'App'
 import { clearYourCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
 import firebase from 'firebase/compat/app'
-import React, { useState } from 'react'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { Cart } from 'models'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import NoItemCart from '../components/No-Item-Cart'
@@ -18,14 +21,26 @@ export interface ICartPageProps {}
 export default function CartPage(props: ICartPageProps) {
   const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
-
-  if (!currentUser || !user.uid) {
+  const colRef = collection(db, 'e-commerce')
+  const q = query(colRef, where('userID', '==', `${user.uid}`))
+  const [state, setState] = useState<Cart[]>([])
+  if (!currentUser && !user.uid) {
     return <Navigate to="/" />
   }
 
   const cartList = useSelector((state: RootState) => state.auth.user.cartList)
   const dispatch: Dispatch = useDispatch()
 
+  useEffect(() => {
+    ;(async () => {
+      const res = await getDocs(q)
+      const temp: Cart[] = []
+      res.docs.map((doc) => {
+        temp.push(doc.data() as Cart)
+      })
+      setState([...temp])
+    })()
+  }, [])
   const handleClearAllCart = (): void => {
     dispatch(clearYourCart())
     handleClose()
@@ -109,7 +124,7 @@ export default function CartPage(props: ICartPageProps) {
                   },
                 }}
               >
-                <TableProductCart cartList={cartList} />
+                <TableProductCart cartList={cartList || state} />
               </Box>
               <Box
                 sx={{
@@ -120,7 +135,7 @@ export default function CartPage(props: ICartPageProps) {
                 }}
                 component={Paper}
               >
-                <ProductCartMobile cartList={cartList} />
+                <ProductCartMobile cartList={cartList || state} />
               </Box>
               <Box
                 sx={{

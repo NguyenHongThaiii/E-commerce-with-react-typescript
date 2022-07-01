@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import firebase from 'firebase/compat/app'
 import { getAccount } from 'utils'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
 const getFirebaseToken = async () => {
   const currentUser = firebase.auth().currentUser
@@ -43,6 +44,7 @@ axiosClient.interceptors.request.use(
 
     return config
   },
+
   function (error) {
     // Do something with request error
     return Promise.reject(error)

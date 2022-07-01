@@ -4,6 +4,8 @@ export interface Cart {
   id: string
   product: Product
   quantity: number
+  userID?: string
+  fbId?: string
 }
 
 export interface CartUser {

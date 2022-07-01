@@ -12,18 +12,23 @@ import {
   Typography,
 } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
+import { db } from 'App'
 import { removeFromCart, setQuantity } from 'app/authSlice'
+import { RootState } from 'app/store'
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore'
 import { Cart } from 'models'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { format } from 'utils'
+import { format, handleGetItemFromFB, handleRemoveCartItem, handleSetQuantityFB } from 'utils'
 
 export interface InfoProductCartProps {
   cart: Cart
 }
 
 export default function InfoProductCart({ cart }: InfoProductCartProps) {
+  const currUser = useSelector((state: RootState) => state.auth.user)
+  const [isTrigger, setIsTrigger] = useState<boolean>(false)
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -43,13 +48,16 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
     p: 4,
   }
 
-  const handleSetQuantity = (cart: Cart) => {
+  const handleSetQuantity = async (cart: Cart) => {
     if (cart.quantity < 1 || cart.quantity > 20) return
-
+    setIsTrigger(true)
+    await handleSetQuantityFB(cart.id, currUser.uid, 'e-commerce', cart.quantity)
     dispatch(setQuantity(cart))
+    setIsTrigger(false)
   }
 
-  const handleOnRemove = (id: string | unknown) => {
+  const handleOnRemove = async (id: string | unknown) => {
+    await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
     dispatch(removeFromCart(id))
     setOpen(false)
   }
@@ -149,6 +157,7 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
             <IconButton
               disabled={cart.quantity === 1}
               onClick={() => handleSetQuantity({ ...cart, quantity: cart.quantity - 1 })}
+              sx={{ color: `${isTrigger && '#ccc'}` }}
             >
               <RemoveIcon />
             </IconButton>
@@ -158,6 +167,7 @@ export default function InfoProductCart({ cart }: InfoProductCartProps) {
             <IconButton
               disabled={cart.quantity === 20}
               onClick={() => handleSetQuantity({ ...cart, quantity: cart.quantity + 1 })}
+              sx={{ color: `${isTrigger && '#ccc'}` }}
             >
               <AddIcon />
             </IconButton>

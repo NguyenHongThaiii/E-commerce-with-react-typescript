@@ -39,7 +39,7 @@ export default function SwiperFeature(props: SwiperFeatureProps) {
         onSlideChange={(swiper) => setIndex(swiper.realIndex)}
         onSwiper={(swiper) => null}
         loop={true}
-        slidesPerView="auto"
+        slidesPerView={1}
         loopedSlides={3}
         initialSlide={0}
         normalizeSlideIndex={true}

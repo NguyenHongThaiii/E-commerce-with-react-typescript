@@ -3,14 +3,24 @@ import { Control, useController } from 'react-hook-form'
 import { Box, IconButton, TextField, Theme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
+import { Product } from 'models'
+
 export interface QuantityFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   label: string
   control: Control<any>
   form: any
+  product?: Product
 }
 
-export function QuantityField({ name, label, control, form, ...inputProps }: QuantityFieldProps) {
+export function QuantityField({
+  name,
+  label,
+  control,
+  form,
+  product,
+  ...inputProps
+}: QuantityFieldProps) {
   const { setValue } = form
   const {
     field: { onChange, onBlur, value, ref },
@@ -27,7 +37,6 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        mt: 4,
       }}
     >
       <IconButton
@@ -44,6 +53,11 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
       </IconButton>
       <Box>
         <TextField
+          onKeyDown={(event) => {
+            if (!/^[a-zA-Z0-9-]+$/.test(event.key)) {
+              event.preventDefault()
+            }
+          }}
           size="small"
           onChange={onChange}
           onBlur={onBlur}
@@ -51,6 +65,7 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
           name={name}
           label={label}
           error={invalid}
+          type="number"
           helperText={error?.message}
           inputRef={ref}
           inputProps={{ ...inputProps, inputMode: 'numeric' }}
@@ -58,13 +73,20 @@ export function QuantityField({ name, label, control, form, ...inputProps }: Qua
       </Box>
       <IconButton
         size="small"
-        disabled={Number.parseInt(value) > 20}
+        disabled={Number.parseInt(value) >= (product?.mountSold as number)}
         sx={{
           border: (theme: Theme) => `1px solid ${theme.palette.grey[300]}`,
           borderRadius: 0,
           ml: 2,
         }}
-        onClick={() => setValue(name, Number.parseInt(value) > 20 ? 1 : Number.parseInt(value) + 1)}
+        onClick={() =>
+          setValue(
+            name,
+            Number.parseInt(value) >= ((product?.mountSold as number) || 30)
+              ? 1
+              : Number.parseInt(value) + 1
+          )
+        }
       >
         <AddIcon />
       </IconButton>
