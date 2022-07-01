@@ -18,12 +18,14 @@ import {
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { db } from 'App'
 import { logout } from 'app/authSlice'
 import { RootState } from 'app/store'
 import Sidebar from 'components/SideBar/Sidebar'
 import { AvatarSkeleton } from 'components/SkeletonsField/Avatar-Skeleton'
 import { totalProductListQuantity } from 'feature/Cart/Cart-Selector'
-import React, { MouseEvent, useState } from 'react'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { getAccount } from 'utils'
@@ -45,10 +47,12 @@ const style = {
 
 export default function Header(props: HeaderProps) {
   const [status, setStatus] = useState(false)
+  const [len, setLen] = useState<number>(0)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const userState = useSelector((state: RootState) => state.auth.user)
   const totalQuantity = useSelector(totalProductListQuantity)
+
   const loading = useSelector((state: RootState) => state.auth.loading)
 
   const Search = styled('div')(({ theme }) => ({
@@ -112,6 +116,16 @@ export default function Header(props: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
+  useEffect(() => {
+    ;(async () => {
+      const colRef = collection(db, 'e-commerce')
+      const q = query(colRef, where('userID', '==', userState.uid))
+      const querySnapshot = await getDocs(q)
+      setLen(querySnapshot.docs.length)
+    })()
+  }, [userState])
+
+  console.log(len)
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -217,7 +231,7 @@ export default function Header(props: HeaderProps) {
                     </Box>
                     <ButtonStyled to="/carts">
                       <IconButton>
-                        <Badge badgeContent={totalQuantity} color="error">
+                        <Badge badgeContent={totalQuantity > 0 ? totalQuantity : len} color="error">
                           <ShoppingCartIcon />
                         </Badge>
                       </IconButton>
