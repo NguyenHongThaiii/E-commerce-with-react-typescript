@@ -79,7 +79,6 @@ export default function CartPage(props: ICartPageProps) {
 
   const handleOnClickRemove = (id: string | unknown) => {
     const newState = state.filter((item: Cart) => item.id !== id)
-    console.log(newState)
     setState(newState)
   }
 
