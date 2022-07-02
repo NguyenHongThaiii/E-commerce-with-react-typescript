@@ -61,7 +61,7 @@ export default function CartPage(props: ICartPageProps) {
       setState([...temp])
     })()
     return () => {}
-  }, [])
+  }, [cartList])
   const handleClearAllCart = async (): Promise<any> => {
     const colRef = collection(db, 'e-commerce')
     const q = query(colRef, where('userID', '==', user.uid))
@@ -158,7 +158,7 @@ export default function CartPage(props: ICartPageProps) {
               >
                 <TableProductCart
                   cartList={state.length > 0 ? state : cartList}
-                  onClick={(id) => handleOnClickRemove(id)}
+                  onClick={handleOnClickRemove}
                 />
               </Box>
               <Box
@@ -172,7 +172,7 @@ export default function CartPage(props: ICartPageProps) {
               >
                 <ProductCartMobile
                   cartList={state.length > 0 ? state : cartList}
-                  onClick={(id) => handleOnClickRemove(id)}
+                  onClick={handleOnClickRemove}
                 />
               </Box>
               <Box
