@@ -26,31 +26,75 @@ export default function LoginPage(props: LoginPageProps) {
   }
 
   return (
-    <Box
-      sx={{
-        position: 'fixed',
-        minWidth: '500px',
-        minHeight: '300px',
-        backgroundColor: '#ccc',
-        top: `calc(50% - 150px)`,
-        left: `calc(50% - 250px)`,
-        textAlign: 'center',
-        borderRadius: 2,
-        p: 3,
-        '& button': {
-          borderRadius: 6,
-        },
-      }}
-    >
-      <Typography
-        component="h2"
-        variant="h4"
-        sx={{ fontWeight: 'bold', fontFamily: `"Montserrat", Arial, Helvetica, sans-serif`, mb: 4 }}
+    <Box sx={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      <Box
+        sx={{
+          position: 'absolute',
+          background: 'linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))',
+          width: '100%',
+          '& > img': { width: '100%', height: '100%', minHeight: '100vh', objectFit: 'cover' },
+        }}
       >
-        Welcome to the FM Shop
-      </Typography>
-      <Box>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        <img src="/login_background.png" alt="/login_background.png" />
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          minWidth: { xs: '320px', sm: '640px' },
+          minHeight: { xs: '300px', sm: '600px' },
+          backgroundColor: '#fff',
+          top: { xs: `calc(50% - 150px)`, sm: `calc(50% - 300px)` },
+          left: { xs: `calc(50% - 200px)`, sm: `calc(50% - 320px)` },
+          textAlign: 'center',
+          borderRadius: 2,
+          py: 6,
+          px: 2,
+          '& button': {
+            borderRadius: 6,
+          },
+        }}
+      >
+        <Box sx={{ width: '100%', overflow: 'hidden' }}>
+          <Typography
+            component="h2"
+            variant="h4"
+            sx={{
+              fontWeight: 'bold',
+              fontFamily: `"Montserrat", Arial, Helvetica, sans-serif`,
+              mb: 4,
+              textAlign: 'center',
+              fontSize: {
+                xs: '20px',
+                sm: '28px',
+              },
+            }}
+          >
+            Login to E-commerce shop
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              '& button': {
+                maxWidth: '330px',
+                width: '320px',
+                textAlign: 'center',
+                display: 'flex',
+                columnGap: 6,
+                fontWeight: '600',
+                boxShadow: 'none',
+                border: '2px solid #dce0e3',
+                '&:hover': {
+                  backgroundColor: '#dce0e3 !important',
+                  transition: 'all 0.05s linear',
+                },
+              },
+            }}
+          >
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+          </Box>
+        </Box>
       </Box>
     </Box>
   )

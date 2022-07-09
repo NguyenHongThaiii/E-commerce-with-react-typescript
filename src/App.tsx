@@ -57,7 +57,11 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      {location.pathname !== '/login' && (
+        <>
+          <Header />
+        </>
+      )}
 
       <Routes>
         <Route path="" element={<HomePage />} />
