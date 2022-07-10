@@ -156,7 +156,7 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
         <TableCell size="medium" sx={{ minWidth: '140px' }}>
           <Box>
             <IconButton
-              disabled={cart.quantity === 1}
+              disabled={cart.quantity <= 1}
               onClick={() => handleSetQuantity({ ...cart, quantity: cart.quantity - 1 })}
               sx={{ color: `${isTrigger && '#ccc'}` }}
             >
@@ -166,7 +166,7 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
               {cart.quantity}
             </Typography>
             <IconButton
-              disabled={cart.quantity === 20}
+              disabled={cart.quantity >= 20}
               onClick={() => handleSetQuantity({ ...cart, quantity: cart.quantity + 1 })}
               sx={{ color: `${isTrigger && '#ccc'}` }}
             >

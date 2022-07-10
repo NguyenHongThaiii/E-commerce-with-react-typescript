@@ -81,7 +81,7 @@ const authSlice = createSlice({
           state.user.cartList.push(action.payload)
           listUserForCartList[indexUser].cartList.push(action.payload)
         } else {
-          state.user.cartList[indexUserRedux].quantity += action.payload.quantity
+          state.user.cartList[indexUserRedux].quantity += +action.payload.quantity
           listUserForCartList[indexUser].cartList[index] = state.user.cartList[indexUserRedux]
         }
         setAccount({ ...state.user })

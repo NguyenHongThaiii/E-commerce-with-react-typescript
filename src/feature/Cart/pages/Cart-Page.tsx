@@ -47,6 +47,7 @@ export default function CartPage(props: ICartPageProps) {
         const result = [...listUserForCartList]
         result[indexUser].cartList = [...temp]
         setCartListOfAccounts(result)
+        setState([...temp])
       }
       if (indexUser < 0 && user.uid) {
         const newUser: CartUser = {
@@ -56,9 +57,8 @@ export default function CartPage(props: ICartPageProps) {
         const result = [...listUserForCartList]
         result.push(newUser)
         setCartListOfAccounts(result)
+        setState([...temp])
       }
-
-      setState([...temp])
     })()
     return () => {}
   }, [cartList])

@@ -1,5 +1,4 @@
 import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import {
   AppBar,
@@ -13,19 +12,16 @@ import {
   Menu,
   MenuItem,
   Modal,
-  Theme,
   Toolbar,
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { db } from 'App'
 import { logout } from 'app/authSlice'
 import { RootState } from 'app/store'
 import Sidebar from 'components/SideBar/Sidebar'
 import { AvatarSkeleton } from 'components/SkeletonsField/Avatar-Skeleton'
 import { totalProductListQuantity } from 'feature/Cart/Cart-Selector'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import React, { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { getAccount } from 'utils'
@@ -52,7 +48,6 @@ export default function Header(props: HeaderProps) {
   const navigate = useNavigate()
   const userState = useSelector((state: RootState) => state.auth.user)
   const totalQuantity = useSelector(totalProductListQuantity)
-
   const loading = useSelector((state: RootState) => state.auth.loading)
 
   const Search = styled('div')(({ theme }) => ({
@@ -118,13 +113,12 @@ export default function Header(props: HeaderProps) {
 
   useEffect(() => {
     ;(async () => {
-      const colRef = collection(db, 'e-commerce')
-      const q = query(colRef, where('userID', '==', userState.uid))
-      const querySnapshot = await getDocs(q)
-      setLen(querySnapshot.docs.length)
+      const total = userState?.cartList?.reduce((total, item) => {
+        return total + item.quantity
+      }, 0)
+      setLen(total)
     })()
   }, [userState])
-
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -230,7 +224,7 @@ export default function Header(props: HeaderProps) {
                     </Box>
                     <ButtonStyled to="/carts">
                       <IconButton>
-                        <Badge badgeContent={totalQuantity > 0 ? totalQuantity : len} color="error">
+                        <Badge badgeContent={len > 0 ? len : totalQuantity} color="error">
                           <ShoppingCartIcon />
                         </Badge>
                       </IconButton>

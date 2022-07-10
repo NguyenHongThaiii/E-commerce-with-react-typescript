@@ -124,7 +124,7 @@ export default function DetailPage(props: DetailPageProps) {
           (product as Product).id,
           currUser.uid,
           'e-commerce',
-          querySnapshot.docs[0].data().quantity + quantity
+          Number.parseInt(querySnapshot.docs[0].data().quantity) + +quantity
         )
         // const colRefUpdate = doc(db, 'e-commerce', querySnapshot.docs[0].id)
         // await updateDoc(colRefUpdate, {
