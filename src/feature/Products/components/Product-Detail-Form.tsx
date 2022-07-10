@@ -33,13 +33,12 @@ export default function ProductDetailForm({
   })
   const { handleSubmit, control } = form
   const handleOnSubmit = async (formValues: QuantityState) => {
-    if (
-      !onSubmit ||
-      (product?.mountSold as number) < formValues.quantity ||
-      typeof +formValues.quantity !== 'number' ||
-      formValues.quantity.toString() === ''
-    ) {
-      alert('Purchase quantity is too large ')
+    if (!onSubmit || (product?.mountSold as number) < formValues.quantity) {
+      alert('Purchase quantity is too large')
+      return
+    }
+    if (typeof +formValues.quantity !== 'number' || formValues.quantity.toString() === '') {
+      alert('Data pass is invalid')
       return
     }
     setLoading(true)
