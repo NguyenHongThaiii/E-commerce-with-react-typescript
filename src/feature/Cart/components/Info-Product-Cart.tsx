@@ -49,7 +49,9 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
   }
 
   const handleSetQuantity = async (cart: Cart) => {
-    if (cart.quantity < 1 || cart.quantity > 20) return
+    console.log(cart)
+
+    if (cart.quantity < 1 || cart.quantity > cart.product.mountSold) return
     setIsTrigger(true)
     await handleSetQuantityFB(cart.id, currUser.uid, 'e-commerce', cart.quantity)
     dispatch(setQuantity(cart))
@@ -166,7 +168,7 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
               {cart.quantity}
             </Typography>
             <IconButton
-              disabled={cart.quantity >= 20}
+              disabled={cart.quantity >= cart.product.mountSold}
               onClick={() => handleSetQuantity({ ...cart, quantity: cart.quantity + 1 })}
               sx={{ color: `${isTrigger && '#ccc'}` }}
             >
