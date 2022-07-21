@@ -69,8 +69,8 @@ export default function CartPage(props: ICartPageProps) {
     querySnapshot.docs.forEach(async (doc) => {
       await handleRemoveCartItem(doc.data().id, user.uid, 'e-commerce')
     })
-    setState((prev) => [])
     dispatch(clearYourCart())
+    setState((prev) => [])
     handleClose()
   }
   const [open, setOpen] = useState(false)
@@ -81,8 +81,6 @@ export default function CartPage(props: ICartPageProps) {
     const newState = state.filter((item: Cart) => item.id !== id)
     setState(newState)
   }
-  console.log(state)
-  console.log(cartList)
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',

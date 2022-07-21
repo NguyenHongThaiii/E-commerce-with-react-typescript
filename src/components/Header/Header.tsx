@@ -49,7 +49,6 @@ export default function Header(props: HeaderProps) {
   const userState = useSelector((state: RootState) => state.auth.user)
   const totalQuantity = useSelector(totalProductListQuantity)
   const loading = useSelector((state: RootState) => state.auth.loading)
-
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 20,

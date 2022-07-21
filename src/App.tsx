@@ -64,8 +64,8 @@ function App() {
       )}
 
       <Routes>
-        <Route path="" element={<HomePage />} />
-        <Route path="/products/*" element={<ListingFeature />} />
+        <Route path="" element={<HomePage />}></Route>
+        <Route path="products/*" element={<ListingFeature />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/carts/*" element={<CartFeature />} />
         <Route path="*" element={<NotFound />} />

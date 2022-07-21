@@ -127,8 +127,8 @@ const authSlice = createSlice({
       const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
 
       if (indexUser >= 0) {
-        state.user.cartList.splice(0)
-        listUserForCartList[indexUser]?.cartList.splice(0)
+        state.user.cartList = []
+        listUserForCartList[indexUser].cartList = []
         setCartListOfAccounts([...listUserForCartList])
         setAccount({ ...state.user })
       }
