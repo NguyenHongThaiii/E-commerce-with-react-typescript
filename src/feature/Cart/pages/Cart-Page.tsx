@@ -18,7 +18,7 @@ import PaymentProductCart from '../components/Payment-Product-Cart'
 import ProductCartMobile from '../components/ProductCartMobile/Product-Cart-Mobile'
 import TableProductCart from '../components/Table-Product-Cart'
 
-export interface ICartPageProps {}
+export interface ICartPageProps { }
 
 export default function CartPage(props: ICartPageProps) {
   const user = useSelector((state: RootState) => state.auth.user)
@@ -33,7 +33,7 @@ export default function CartPage(props: ICartPageProps) {
   const dispatch: Dispatch = useDispatch()
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const colRef = collection(db, 'e-commerce')
       const q = query(colRef, where('userID', '==', `${user.uid}`))
       const res = await getDocs(q)
@@ -60,15 +60,16 @@ export default function CartPage(props: ICartPageProps) {
         setState([...temp])
       }
     })()
-    return () => {}
+    return () => { }
   }, [cartList])
   const handleClearAllCart = async (): Promise<any> => {
     const colRef = collection(db, 'e-commerce')
     const q = query(colRef, where('userID', '==', user.uid))
     const querySnapshot = await getDocs(q)
-    querySnapshot.docs.forEach(async (doc) => {
+    const promises = querySnapshot.docs.map(async (doc) => {
       await handleRemoveCartItem(doc.data().id, user.uid, 'e-commerce')
     })
+    await Promise.all(promises)
     dispatch(clearYourCart())
     setState((prev) => [])
     handleClose()
