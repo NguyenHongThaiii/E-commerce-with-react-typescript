@@ -1,76 +1,68 @@
 import { Box, Button, Grid, Modal, Paper, Typography } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
-import { db } from 'App'
-import { clearYourCart } from 'app/authSlice'
+import { db, firebaseGetItemByOneCondition } from 'firebase'
+import { clearYourCart, removeFromCart } from 'app/authSlice'
 import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import Slide from 'components/Slide/Slide'
-import { CartProvider } from 'context/cart-context'
 import firebase from 'firebase/compat/app'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { Cart, CartUser } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import { Cart, CartUser, QueryCustom } from 'models'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { getCartListOfAccounts, handleRemoveCartItem, setCartListOfAccounts } from 'utils'
+import { getCartListOfAccounts, setCartListOfAccounts } from 'utils'
+import { handleRemoveCartItem, } from 'firebase'
 import NoItemCart from '../components/No-Item-Cart'
 import PaymentProductCart from '../components/Payment-Product-Cart'
 import ProductCartMobile from '../components/ProductCartMobile/Product-Cart-Mobile'
 import TableProductCart from '../components/Table-Product-Cart'
+import { NAME_OF_COLLECTION } from 'constants/'
 
-export interface ICartPageProps {}
+export interface ICartPageProps { }
 
 export default function CartPage(props: ICartPageProps) {
   const user = useSelector((state: RootState) => state.auth.user)
   const currentUser = firebase.auth().currentUser
-  const checkRef = useRef<boolean>(false)
-  const [state, setState] = useState<Cart[]>([])
   if (!currentUser && !user.uid) {
     return <Navigate to="/" />
   }
-
   const cartList = useSelector((state: RootState) => state.auth.user.cartList)
   const dispatch: Dispatch = useDispatch()
 
   useEffect(() => {
-    ;(async () => {
-      const colRef = collection(db, 'e-commerce')
-      const q = query(colRef, where('userID', '==', `${user.uid}`))
-      const res = await getDocs(q)
-      const temp: Cart[] = []
-      res.docs.map((doc) => {
-        temp.push(doc.data() as Cart)
-      })
-      const listUserForCartList = getCartListOfAccounts()
-      const indexUser = listUserForCartList.findIndex((item: CartUser) => item.uid === user.uid)
-      if (indexUser >= 0 && user.uid) {
-        const result = [...listUserForCartList]
-        result[indexUser].cartList = [...temp]
-        setCartListOfAccounts(result)
-        setState([...temp])
-      }
-      if (indexUser < 0 && user.uid) {
-        const newUser: CartUser = {
-          uid: user.uid,
-          cartList: [...temp],
-        }
-        const result = [...listUserForCartList]
-        result.push(newUser)
-        setCartListOfAccounts(result)
-        setState([...temp])
-      }
-    })()
-    return () => {}
+    // ; (async () => {
+    //   const colRef = collection(db, NAME_OF_COLLECTION.carts)
+    //   const queryCustom: QueryCustom[] = [{ field: "userID", operand: "==", value: `${user.uid}` }]
+    //   const temp: Cart[] = await firebaseGetItemByOneCondition<Cart>(colRef, queryCustom, []);
+    //   const listUserForCartList = getCartListOfAccounts()
+    //   const indexUser = listUserForCartList.findIndex((item: CartUser) => item.uid === user.uid)
+    //   if (indexUser >= 0 && user.uid) {
+    //     const result = [...listUserForCartList]
+    //     result[indexUser].cartList = [...temp]
+    //     setCartListOfAccounts(result)
+    //   }
+    //   if (indexUser < 0 && user.uid) {
+    //     const newUser: CartUser = {
+    //       uid: user.uid,
+    //       cartList: [...temp],
+    //     }
+    //     setCartListOfAccounts([...listUserForCartList, newUser])
+    //   }
+    // })()
+    return () => { }
   }, [cartList])
+
   const handleClearAllCart = async (): Promise<any> => {
-    const colRef = collection(db, 'e-commerce')
+    const colRef = collection(db, NAME_OF_COLLECTION.carts)
     const q = query(colRef, where('userID', '==', user.uid))
     const querySnapshot = await getDocs(q)
-    querySnapshot.docs.forEach(async (doc) => {
-      await handleRemoveCartItem(doc.data().id, user.uid, 'e-commerce')
+    const promises = querySnapshot.docs.map(async (doc) => {
+      return handleRemoveCartItem(doc.data().id, user.uid, NAME_OF_COLLECTION.carts)
     })
+    await Promise.all(promises)
+
     dispatch(clearYourCart())
-    setState((prev) => [])
     handleClose()
   }
   const [open, setOpen] = useState(false)
@@ -78,8 +70,7 @@ export default function CartPage(props: ICartPageProps) {
   const handleClose = () => setOpen(false)
 
   const handleOnClickRemove = (id: string | unknown) => {
-    const newState = state.filter((item: Cart) => item.id !== id)
-    setState(newState)
+    dispatch(removeFromCart(id))
   }
   const style = {
     position: 'absolute' as 'absolute',
@@ -144,7 +135,7 @@ export default function CartPage(props: ICartPageProps) {
       </Box>
 
       <Box sx={{ maxWidth: '1280px', m: '0 auto', px: 1.5 }}>
-        {state?.length > 0 || cartList.length > 0 ? (
+        {cartList.length > 0 ? (
           <Grid container spacing={2}>
             <Grid item xs={12} lg={8}>
               <Box
@@ -156,7 +147,7 @@ export default function CartPage(props: ICartPageProps) {
                 }}
               >
                 <TableProductCart
-                  cartList={state.length > 0 ? state : cartList}
+                  cartList={cartList.length > 0 ? cartList : []}
                   onClick={handleOnClickRemove}
                 />
               </Box>
@@ -170,7 +161,7 @@ export default function CartPage(props: ICartPageProps) {
                 component={Paper}
               >
                 <ProductCartMobile
-                  cartList={state.length > 0 ? state : cartList}
+                  cartList={cartList.length > 0 ? cartList : []}
                   onClick={handleOnClickRemove}
                 />
               </Box>

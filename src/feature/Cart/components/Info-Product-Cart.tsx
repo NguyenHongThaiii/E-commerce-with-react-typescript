@@ -12,16 +12,15 @@ import {
   Typography,
 } from '@mui/material'
 import { Dispatch } from '@reduxjs/toolkit'
-import { db } from 'App'
 import { removeFromCart, setQuantity } from 'app/authSlice'
 import { RootState } from 'app/store'
-import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore'
+import { NAME_OF_COLLECTION } from 'constants/'
+import { handleRemoveCartItem, handleSetQuantityFB } from "firebase"
 import { Cart } from 'models'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { format, handleGetItemFromFB, handleRemoveCartItem, handleSetQuantityFB } from 'utils'
-
+import { format, } from 'utils'
 export interface InfoProductCartProps {
   cart: Cart
   onClick: (values: string | unknown) => void
@@ -53,13 +52,13 @@ export default function InfoProductCart({ cart, onClick }: InfoProductCartProps)
 
     if (cart.quantity < 1 || cart.quantity > cart.product.mountSold) return
     setIsTrigger(true)
-    await handleSetQuantityFB(cart.id, currUser.uid, 'e-commerce', cart.quantity)
+    await handleSetQuantityFB(cart.id, currUser.uid, NAME_OF_COLLECTION.carts, cart.quantity)
     dispatch(setQuantity(cart))
     setIsTrigger(false)
   }
 
   const handleOnRemove = async (id: string | unknown) => {
-    await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
+    await handleRemoveCartItem(id, currUser.uid, NAME_OF_COLLECTION.carts)
     onClick(id)
     dispatch(removeFromCart(id))
     setOpen(false)

@@ -27,7 +27,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getAccount } from 'utils'
 import SearchFormHeader from './components/Search-Form-Header'
 
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -49,45 +49,7 @@ export default function Header(props: HeaderProps) {
   const userState = useSelector((state: RootState) => state.auth.user)
   const totalQuantity = useSelector(totalProductListQuantity)
   const loading = useSelector((state: RootState) => state.auth.loading)
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: 20,
-    backgroundColor: theme.palette.grey[300],
-    '&:hover': {
-      boxShadow: theme.shadows[1],
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 'auto',
-    },
-  }))
-
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 1),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }))
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
-    },
-  }))
-
-  const ButtonStyled = styled(Link)(({}) => ({
+  const ButtonStyled = styled(Link)(({ }) => ({
     color: 'inherit',
     textDecoration: 'none',
     fontWeight: '500',
@@ -111,7 +73,7 @@ export default function Header(props: HeaderProps) {
   const open = Boolean(anchorEl)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const total = userState?.cartList?.reduce((total, item) => {
         return total + item.quantity
       }, 0)
@@ -188,12 +150,6 @@ export default function Header(props: HeaderProps) {
             <Box sx={{ textAlign: 'center' }}>
               <SearchFormHeader />
 
-              {/* <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-              </Search> */}
             </Box>
 
             {getAccount() ? (

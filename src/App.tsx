@@ -16,16 +16,17 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
+import { getAccount } from 'utils'
 
-const config = {
-  apiKey: import.meta.env.VITE_APP_FIREBASE_API,
-  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: 'authentication-ecommerce-bec4b',
-  storageBucket: 'authentication-ecommerce-bec4b.appshot.com',
-  // ...
-}
-const app = firebase.initializeApp(config)
-export const db = getFirestore(app)
+// const config = {
+//   apiKey: import.meta.env.VITE_APP_FIREBASE_API,
+//   authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+//   projectId: 'authentication-ecommerce-bec4b',
+//   storageBucket: 'authentication-ecommerce-bec4b.appshot.com',
+//   // ...
+// }
+// const app = firebase.initializeApp(config)
+// export const db = getFirestore(app)
 
 function App() {
   const dispatch = useDispatch()
@@ -36,16 +37,17 @@ function App() {
 
   // Handle firebase auth changed
   useEffect(() => {
+    if (getAccount().user.uid) return;
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: any | null) => {
       if (!user) {
         // console.log('user is not login')
         return
       }
-
       try {
         const resultAction = await dispatch(
           getMe({ ...user.providerData[0], cartList, uid: user.uid })
         )
+        console.log("run");
         const currentUser = unwrapResult<any>(resultAction)
         // const token = await user.getIdToken()
       } catch (error) {

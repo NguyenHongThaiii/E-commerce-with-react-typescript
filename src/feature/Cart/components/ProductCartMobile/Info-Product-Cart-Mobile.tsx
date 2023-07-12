@@ -6,11 +6,13 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { totalProductListCost } from 'feature/Cart/Cart-Selector'
-import { format, handleRemoveCartItem, handleSetQuantityFB } from 'utils'
+import { format, } from 'utils'
+import { handleRemoveCartItem, handleSetQuantityFB } from 'firebase'
 import { Dispatch } from '@reduxjs/toolkit'
 import { removeFromCart, setQuantity } from 'app/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from 'app/store'
+import { NAME_OF_COLLECTION } from 'constants/'
 
 export interface InfoProductCartMobileProps {
   cart: Cart
@@ -44,13 +46,13 @@ export default function InfoProductCartMobile({ cart, onClick }: InfoProductCart
   const handleSetQuantity = async (cart: Cart) => {
     if (cart.quantity < 1 || cart.quantity > 20) return
     setIsTrigger(true)
-    await handleSetQuantityFB(cart.id, currUser.uid, 'e-commerce', cart.quantity)
+    await handleSetQuantityFB(cart.id, currUser.uid, NAME_OF_COLLECTION.carts, cart.quantity)
     dispatch(setQuantity(cart))
     setIsTrigger(false)
   }
 
   const handleOnRemove = async (id: string | unknown) => {
-    await handleRemoveCartItem(id, currUser.uid, 'e-commerce')
+    await handleRemoveCartItem(id, currUser.uid, NAME_OF_COLLECTION.carts)
     onClick(id)
     dispatch(removeFromCart(id))
     setOpen(false)

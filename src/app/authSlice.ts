@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import userApi from 'api/userApi'
-import { db } from 'App'
+import { NAME_OF_COLLECTION } from 'constants//'
+import { db, firebaseGetItemByOneCondition } from 'firebase'
 import firebase from 'firebase/compat/app'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { Cart, CartUser, FirebaseResponse } from 'models'
+import { collection } from 'firebase/firestore'
+import { Cart, CartUser, FirebaseResponse, QueryCustom } from 'models'
 import { getAccount, getCartListOfAccounts, setAccount, setCartListOfAccounts } from 'utils'
 
 export interface AuthState {
@@ -15,8 +16,14 @@ export interface AuthState {
 export const getMe = createAsyncThunk('auth/fetchAuth', async (payload: FirebaseResponse) => {
   try {
     const userFireBase = await userApi.getMe(payload)
+    const queryCustom: QueryCustom[] = [
+      { field: 'userID', operand: '==', value: `${userFireBase.uid}` },
+    ]
+    const colRef = collection(db, NAME_OF_COLLECTION.carts)
 
-    return userFireBase
+    const temp: Cart[] = await firebaseGetItemByOneCondition<Cart>(colRef, queryCustom, [])
+
+    return { user: userFireBase, carts: temp?.length > 0 ? temp : [] }
   } catch (error) {
     console.log('Error', error)
   }
@@ -26,11 +33,12 @@ const initialState: AuthState = {
   loading: false,
   error: '',
   user: {
-    displayName: getAccount()?.displayName?.length === 0 ? '' : getAccount()?.displayName,
-    email: getAccount()?.email?.length === 0 ? '' : getAccount()?.email,
-    photoURL: getAccount()?.photoURL?.length === 0 ? '' : getAccount()?.photoURL,
-    uid: getAccount()?.uid?.length === 0 ? '' : getAccount()?.uid,
-    cartList: getAccount()?.cartList?.length === 0 ? [] : getAccount()?.cartList,
+    displayName: getAccount()?.user?.displayName?.length === 0 ? '' : getAccount().user.displayName,
+    email: getAccount()?.user?.email?.length === 0 ? '' : getAccount().user.email,
+    photoURL: getAccount()?.user?.photoURL?.length === 0 ? '' : getAccount().user.photoURL,
+    uid: getAccount()?.user?.uid?.length === 0 ? '' : getAccount().user.uid,
+    // cartList: [],
+    cartList: getAccount()?.user?.cartList?.length === 0 ? [] : getAccount().user.cartList,
   },
 }
 
@@ -51,87 +59,92 @@ const authSlice = createSlice({
       state.loading = false
       localStorage.removeItem('firebaseui::rememberedAccounts')
     },
+    loadToCart(state: AuthState, action: PayloadAction<Cart[]>) {
+      state.user.cartList = action.payload
+    },
     addToCart(state: AuthState, action: PayloadAction<Cart>) {
-      const isUser = !!JSON.parse(localStorage.getItem('firebaseui::rememberedAccounts') as string)
-        ?.email
-      if (!isUser) {
-        return
-      }
-      const { id } = action.payload
-      const uid = getAccount().uid
-      const listUserForCartList = getCartListOfAccounts()
-      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
-      const index = listUserForCartList[indexUser]?.cartList.findIndex((user: Cart) => {
-        return user.id === (id as unknown)
-      })
-      const indexUserRedux = state.user.cartList.findIndex((cart: Cart) => cart.id === id)
-      const newUser: CartUser = {
-        uid,
-        cartList: [],
-      }
-      if (indexUser < 0) {
-        newUser.cartList.push(action.payload)
-        listUserForCartList.push(newUser)
-        state.user.cartList.push(action.payload)
+      // const isUser = !!JSON.parse(localStorage.getItem('firebaseui::rememberedAccounts') as string)
+      //   ?.email
+      // if (!isUser) {
+      //   return
+      // }
+      // const { id } = action.payload
+      // const uid = getAccount().uid
+      // const listUserForCartList = getCartListOfAccounts()
+      // const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      // const index = listUserForCartList[indexUser]?.cartList.findIndex((user: Cart) => {
+      //   return user.id === (id as unknown)
+      // })
+      // const indexUserRedux = state.user.cartList.findIndex((cart: Cart) => cart.id === id)
+      // const newUser: CartUser = {
+      //   uid,
+      //   cartList: [],
+      // }
+      // if (indexUser < 0) {
+      //   newUser.cartList.push(action.payload)
+      //   listUserForCartList.push(newUser)
 
-        setCartListOfAccounts([...listUserForCartList])
-        setAccount({ ...state.user })
-      } else {
-        if (index < 0) {
-          state.user.cartList.push(action.payload)
-          listUserForCartList[indexUser].cartList.push(action.payload)
-        } else {
-          state.user.cartList[indexUserRedux].quantity += +action.payload.quantity
-          listUserForCartList[indexUser].cartList[index] = state.user.cartList[indexUserRedux]
-        }
-        setAccount({ ...state.user })
-        setCartListOfAccounts([...listUserForCartList])
-      }
+      state.user.cartList.push(action.payload)
+
+      // setCartListOfAccounts([...listUserForCartList])
+      // setAccount({ ...state.user })
+      // } else {
+      //   if (index < 0) {
+      //     state.user.cartList.push(action.payload)
+      //     listUserForCartList[indexUser].cartList.push(action.payload)
+      //   } else {
+      //     state.user.cartList[indexUserRedux].quantity += +action.payload.quantity
+      //     listUserForCartList[indexUser].cartList[index] = state.user.cartList[indexUserRedux]
+      //   }
+      //   setAccount({ ...state.user })
+      //   setCartListOfAccounts([...listUserForCartList])
+      // }
     },
 
     setQuantity(state: AuthState, action: PayloadAction<Cart>) {
-      const uid = getAccount().uid
-      const listUserForCartList = getCartListOfAccounts()
-      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      // const uid = getAccount().uid
+      // const listUserForCartList = getCartListOfAccounts()
+      // const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
       const index = state.user.cartList.findIndex(
         (cart: Cart) => cart.id === (action.payload.id as unknown)
       )
       if (index >= 0) {
         state.user.cartList[index].quantity = action.payload.quantity
-        listUserForCartList[indexUser].cartList[index].quantity = action.payload.quantity
-        setCartListOfAccounts([...listUserForCartList])
-        setAccount({ ...state.user })
+        // listUserForCartList[indexUser].cartList[index].quantity = action.payload.quantity
+        // setCartListOfAccounts([...listUserForCartList])
+        // setAccount({ ...state.user })
       } else {
         return
       }
     },
     removeFromCart(state: AuthState, action: PayloadAction<string | unknown>) {
-      const uid = getAccount().uid
-      const listUserForCartList = getCartListOfAccounts()
-      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      // const uid = getAccount().uid
+      // const listUserForCartList = getCartListOfAccounts()
+      // const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
       const index = state.user.cartList.findIndex(
         (cart: Cart) => cart.id === (action.payload as unknown)
       )
       if (index >= 0) {
         state.user.cartList.splice(index, 1)
-        listUserForCartList[indexUser]?.cartList.splice(index, 1)
-        setCartListOfAccounts([...listUserForCartList])
-        setAccount({ ...state.user })
+        // listUserForCartList[indexUser]?.cartList.splice(index, 1)
+        // setCartListOfAccounts([...listUserForCartList])
+        // setAccount({ ...state.user })
       } else {
         return
       }
     },
     clearYourCart(state: AuthState) {
-      const uid = getAccount().uid
-      const listUserForCartList = getCartListOfAccounts()
-      const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
+      // const uid = getAccount().uid
+      // const listUserForCartList = getCartListOfAccounts()
+      // const indexUser = listUserForCartList.findIndex((user: CartUser) => user.uid === uid)
 
-      if (indexUser >= 0) {
-        state.user.cartList = []
-        listUserForCartList[indexUser].cartList = []
-        setCartListOfAccounts([...listUserForCartList])
-        setAccount({ ...state.user })
-      }
+      // if (indexUser >= 0) {
+      state.user.cartList = []
+      //   listUserForCartList[indexUser].cartList = []
+      //   setCartListOfAccounts([...listUserForCartList])
+      //   setAccount({ ...state.user })
+      // }
+      // console.log(state.user.cartList)
     },
   },
   extraReducers: (builder) => {
@@ -139,17 +152,19 @@ const authSlice = createSlice({
       state.loading = true
     })
     builder.addCase(getMe.fulfilled, (state: AuthState, action) => {
-      if (!getCartListOfAccounts()) {
-        setCartListOfAccounts([])
-      }
+      // if (!getCartListOfAccounts()) {
+      //   setCartListOfAccounts([])
+      // }
       state.loading = false
-      state.user = action.payload as FirebaseResponse
-      const listUserForCartList = getCartListOfAccounts()
+      state.user = action.payload?.user as FirebaseResponse
+      state.user.cartList = action.payload?.carts ? action.payload?.carts : []
 
-      const indexUser = listUserForCartList.findIndex(
-        (user: CartUser) => user.uid === (action.payload as FirebaseResponse).uid
-      )
-      if (indexUser >= 0) state.user.cartList = listUserForCartList[indexUser].cartList
+      // const listUserForCartList = getCartListOfAccounts()
+
+      // const indexUser = listUserForCartList.findIndex(
+      //   (user: CartUser) => user.uid === (action.payload as FirebaseResponse).uid
+      // )
+      // if (indexUser >= 0) state.user.cartList = listUserForCartList[indexUser].cartList
 
       setAccount(action.payload)
     })

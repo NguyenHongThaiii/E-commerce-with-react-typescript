@@ -1,37 +1,29 @@
 import { Box, Button, Container, Grid, Modal, Paper, Theme, Typography } from '@mui/material'
+import { db } from 'firebase'
 import productsApi from 'api/productsApi'
 import { addToCart } from 'app/authSlice'
+import { RootState } from 'app/store'
 import CurrentPosition from 'components/CurrentPostiton/Current-Position'
 import NotFound from 'components/NotFound/Not-Found'
 import { InfoDetailSkeleton } from 'components/SkeletonsField/Info-Detail-Skeleton'
 import Slide from 'components/Slide/Slide'
+import { handleGetItemFromFB, handleSetQuantityFB } from 'firebase'
+import firebase from 'firebase/compat/app'
+import {
+  addDoc,
+  collection
+} from 'firebase/firestore'
 import { Cart, Product, QuantityState } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import InfoProductDetail from '../components/Info-Product-Detail'
 import PreviewImageDetail from '../components/Preview-Image-Detail'
 import ProductDetailForm from '../components/Product-Detail-Form'
-import firebase from 'firebase/compat/app'
-import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  limit,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore'
-import { db } from 'App'
-import { RootState } from 'app/store'
-import { handleGetItemFromFB, handleSetQuantityFB } from 'utils'
+import { NAME_OF_COLLECTION } from 'constants/'
 
-export interface DetailPageProps {}
+export interface DetailPageProps { }
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -76,7 +68,7 @@ export default function DetailPage(props: DetailPageProps) {
   const handleClose = () => setOpen(false)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       try {
         setLoading(true)
         const response = await productsApi.getById(productId as string)
@@ -86,9 +78,9 @@ export default function DetailPage(props: DetailPageProps) {
         setNotFound(true)
       }
       setLoading(false)
-      ;(scrollRef.current as HTMLDivElement).scrollIntoView({
-        behavior: 'smooth',
-      })
+        ; (scrollRef.current as HTMLDivElement).scrollIntoView({
+          behavior: 'smooth',
+        })
     })()
   }, [productId])
 
@@ -107,15 +99,15 @@ export default function DetailPage(props: DetailPageProps) {
         quantity,
         id: (product as Product).id,
         product: product as Product,
-        userID: currUser?.uid,
+        userID: currUser.uid,
       }
       const actions = addToCart(data)
-      const colRef = collection(db, 'e-commerce')
+      const colRef = collection(db, NAME_OF_COLLECTION.carts)
 
       const querySnapshot = await handleGetItemFromFB(
         (product as Product).id,
         currUser.uid,
-        'e-commerce'
+        NAME_OF_COLLECTION.carts
       )
       if (querySnapshot.docs.length <= 0) {
         addDoc(colRef, data)
@@ -123,10 +115,10 @@ export default function DetailPage(props: DetailPageProps) {
         handleSetQuantityFB(
           (product as Product).id,
           currUser.uid,
-          'e-commerce',
+          NAME_OF_COLLECTION.carts,
           Number.parseInt(querySnapshot.docs[0].data().quantity) + +quantity
         )
-        // const colRefUpdate = doc(db, 'e-commerce', querySnapshot.docs[0].id)
+        // const colRefUpdate = doc(db, NAME_OF_COLLECTION.carts, querySnapshot.docs[0].id)
         // await updateDoc(colRefUpdate, {
         //   quantity: querySnapshot.docs[0].data().quantity + quantity,
         // })
